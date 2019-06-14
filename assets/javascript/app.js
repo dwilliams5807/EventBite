@@ -1,11 +1,36 @@
 //  get user location
+var postalCode;
+var latitude;
+var longitude;
+
+if ("geolocation" in navigator) {
+    // check if geolocation is supported/enabled on current browser
+    navigator.geolocation.getCurrentPosition(
+        function success(position) {
+            console.log(position)
+        // for when getting location is a success
+        postalCode = position.address.postalCode;
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log('latitude', position.coords.latitude, 
+                    'longitude', position.coords.longitude);
+        },
+        function error(error_message) {
+        // for when getting location results in an error
+        console.error('An error has occured while retrieving location', error_message)
+        })
+    } else {
+    // geolocation is not supported
+    // get your location some other way
+    console.log('geolocation is not enabled on this browser')
+}
 //    if user refuses, they can use search bar
 
 //  search bar
 //    accept city name / zip code
 
 
-// function seatGeek() {
+function seatGeek() {
     var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
     // the number of gifs we want returned
     var limit = "15";
@@ -27,4 +52,5 @@
         console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
         console.log("seatgeek - event type: ", response.events[0].datetime_local)
     })
-// }
+}
+
