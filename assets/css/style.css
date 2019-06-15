@@ -63,6 +63,10 @@ header {
     letter-spacing: 0.4px;
 }
 
+.card-container {
+    flex-wrap: wrap;
+}
+
 .card-container, .location-container {
     display: flex;
     margin: 20px -10px;
@@ -70,14 +74,13 @@ header {
 
 .card {
     position: relative;
-    width: 33.3333%;
-    margin: 0 10px;
+    width: calc(33.333% - 20px);
+    margin: 0 10px 30px;
     box-shadow: 3px 3px 9px rgba(141,141,141,0.1);
     border-radius: 10px;
 }
 
 .card, .card img {
-    /* border-radius: 0; */
     border: 0;
 }
 
