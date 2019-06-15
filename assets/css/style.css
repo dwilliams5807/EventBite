@@ -63,6 +63,11 @@ header {
     margin-left: 15px;
 }
 
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
+
 .dropdown-toggle {
     background-color: #e6e6e6;
     border-radius: 25px;
@@ -77,6 +82,22 @@ header {
 
 .push-right {
     margin-left: auto;
+}
+
+.dropdown-menu {
+    top: 6px!important;
+    border-radius: 8px;
+    border: 1px solid #ededed;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dropdown-item:active {
+    background-color: #e6e6e6;
+    color: black;
 }
 
 /* Events */
@@ -180,12 +201,12 @@ header {
 
 .location-container {
     margin-bottom: 55px;
-    display: flex;
+    flex-wrap: wrap;
 }
 
 .city-container {
     position: relative;
-    width: 25%;
+    width: calc(25% - 20px);
     margin: 0 10px;
 }
 
@@ -196,7 +217,7 @@ header {
     object-fit: cover;
 }
 
-.city-container img:hover {
+.city-container:hover {
     cursor: pointer;
 }
 
@@ -205,10 +226,15 @@ header {
     max-width: 750px;
 }
 
+.modal-content {
+    border-radius: 10px;
+}
+
 .modal-header {
     padding: 0;
     display: block;
     border-bottom: 0;
+    border-radius: 10px 10px 0 0;
 }
 
 .modal-header img {
@@ -286,8 +312,12 @@ header {
     margin-bottom: 0;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 973px) {
     .card {
-        margin-bottom: 30px;
+        width: calc(50% - 20px);
+    }
+    .city-container {
+        width: calc(50% - 20px);
+        margin-bottom: 20px;
     }
 }
