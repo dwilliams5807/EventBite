@@ -7,6 +7,7 @@ body {
     margin: 0 10%;
 }
 
+/* Background */
 .main-screen {
     background: url("../images/background.jpg");
     height: 100vh;
@@ -14,6 +15,7 @@ body {
     background-position: center;
 }
 
+/* Header */
 header {
     display: flex;
     align-items: center;
@@ -24,9 +26,9 @@ header {
     margin-right: auto;
     font-weight: 600;
     font-size: 20px;
-    /* color: white; */
 }
 
+/* Search Bar */
 .search-container, .search-input {
     /* background-color: #ededed; */
     background-color: white;
@@ -51,6 +53,33 @@ header {
     letter-spacing: 0.2px;
 }
 
+/* Event Dropdown Filter */
+.dropdown-container {
+    display: flex;
+    margin-top: 30px;
+}
+
+.dropdown {
+    margin-left: 15px;
+}
+
+.dropdown-toggle {
+    background-color: #e6e6e6;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.dropdown-toggle::after {
+    margin-left: 10px;
+}
+
+.push-right {
+    margin-left: auto;
+}
+
+/* Events */
 .event-listing, .featured-locations {
     margin-top: 25px;
     margin-bottom: 55px;
@@ -63,13 +92,14 @@ header {
     letter-spacing: 0.4px;
 }
 
-.card-container {
-    flex-wrap: wrap;
-}
-
+/* Event Card Info */
 .card-container, .location-container {
     display: flex;
     margin: 20px -10px;
+}
+
+.card-container {
+    flex-wrap: wrap;
 }
 
 .card {
@@ -133,6 +163,21 @@ header {
     font-size: 13px;
 }
 
+/* Featured Locations */
+.travel-destination {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align:center;
+    color: white;
+}
+
+.travel-destination h4 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
 .location-container {
     margin-bottom: 55px;
     display: flex;
@@ -155,20 +200,7 @@ header {
     cursor: pointer;
 }
 
-.travel-destination {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align:center;
-    color: white;
-}
-
-.travel-destination h4 {
-    color: white;
-    font-weight: 600;
-    margin-bottom: 0;
-}
-
+/* Event Modal */
 .modal-dialog {
     max-width: 750px;
 }
@@ -198,16 +230,6 @@ header {
 .modal-body .date, .modal-body .location {
     font-size: 15px;
     text-transform: none;
-}
-
-.tickets {
-    padding: 10px 20px;
-    background-color: #fb5845;
-    color: white;
-    border-radius: 10px;
-    text-align: center;
-    width: 200px;
-    margin: auto;
 }
 
 .event h4 {
@@ -246,31 +268,6 @@ header {
 
 .restaurant-gallery .row::-webkit-scrollbar {
     width: 0;
-}
-
-.dropdown-toggle {
-    background-color: #e6e6e6;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.dropdown-toggle::after {
-    margin-left: 10px;
-}
-
-.dropdown-container {
-    display: flex;
-    margin-top: 30px;
-}
-
-.dropdown {
-    margin-left: 15px;
-}
-
-.push-right {
-    margin-left: auto;
 }
 
 .event-setting {
