@@ -114,3 +114,12 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 //    accept city name / zip code
 
 seatGeek();
+
+$(".category-menu a").on("click", function() {
+    $(".category-toggle:first-child").text($(this).text());
+    $(".category-toggle:first-child").val($(this).text());
+    $(".category-toggle:first-child").css({
+        "background-color": "#fb5845",
+        "color": "white"
+    })
+})

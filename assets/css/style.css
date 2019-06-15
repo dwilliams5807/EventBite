@@ -141,6 +141,8 @@ header {
 
 .card img {
     border-radius: 10px 10px 0 0;
+    height: 258px;
+    object-fit: cover;
 }
 
 .card:hover {
