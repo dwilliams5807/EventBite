@@ -8,35 +8,37 @@ if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
         function success(position) {
             console.log(position)
-        // for when getting location is a success
-        postalCode = position.address.postalCode;
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log('latitude', position.coords.latitude, 
-                    'longitude', position.coords.longitude);
-        },
-        function error(error_message) {
-        // for when getting location results in an error
-        console.error('An error has occured while retrieving location', error_message)
-        })
-    } else {
-    // geolocation is not supported
-    // get your location some other way
-    console.log('geolocation is not enabled on this browser')
-}
-//    if user refuses, they can use search bar
+            // for when getting location is a success
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            console.log('latitude', position.coords.latitude, 
+                        'longitude', position.coords.longitude);
+                        var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
+            // the number of gifs we want returned
+            var limit = "15";
+            // our URL to search
+            // var queryURL = "https://api.seatgeek.com/2/events?client_id=" + clientID;
+            var queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID;
+            
 
-//  search bar
-//    accept city name / zip code
+            // YELP API - NOT WORKING CURRENTLY
+//             var myurl = "https://api.yelp.com/v3/businesses/search?term=food&location=austin";
+
+//             $.ajax({
+//             url: myurl,
+//             headers: {
+//                 'Access-Control-Allow-Origin': '*',
+//                 'Authorization':'Bearer lsRacHHzZ9gH30hDLH0fK0LLZJ6hldM3E5chXbFFHtTQpiJ0d66mXuEK1BquON_wzXgqOgt36k6AYDXMe67PKCTU0GHFpjE25aSUcvqDqcOqStOXW50WHQJYzZkCXXYx'
+//             },
+//             method: 'GET'
+//             }).then(function(data) {
+//                     console.log(data)
+//             })
+//         }
+//     )
+// }
 
 
-function seatGeek() {
-    var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
-    // the number of gifs we want returned
-    var limit = "15";
-    // our URL to search
-    var queryURL = "https://api.seatgeek.com/2/events?client_id=" + clientID;
-    
     // send an AJAX request
     $.ajax({
         url: queryURL,
@@ -51,6 +53,53 @@ function seatGeek() {
         console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
         console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
         console.log("seatgeek - event type: ", response.events[0].datetime_local)
+
+
+        $('.container-fluid').append(
+            '<div class="row">' + 
+                '<div class="col-md-4">' + 
+                    '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
+                        '<p class="category"><span>Music</span></p>' + 
+                        '<img src="https://seatgeek.com/images/performers-landscape/twenty-one-pilots-be1927/15670/19227/huge.jpg" class="card-img-top">' + 
+                        '<div class="card-body">' + 
+                            '<div class="date">Sun, Jun 23 at 3:30 pm</div>' + 
+                            '<h5 class="card-title">Twenty One Pilots</h5>' + 
+                            '<div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>' + 
+                        '</div>' + 
+                    '</div>' + 
+                '</div>' + 
+            '</div>'
+        );
+
+
+
+
+
+
+
+
+
+
+
     })
+        },
+        function error(error_message) {
+        // for when getting location results in an error
+        console.error('An error has occured while retrieving location', error_message)
+        })
+    } else {
+    // geolocation is not supported
+    // get your location some other way
+    console.log('geolocation is not enabled on this browser')
 }
 
+
+//    if user refuses, they can use search bar
+
+//  search bar
+//    accept city name / zip code
+
+
+// function seatGeek() {
+    
+// }
