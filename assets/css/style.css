@@ -234,6 +234,7 @@ header {
 
 .modal-content {
     border-radius: 10px;
+    border: 0;
 }
 
 .modal-header {
@@ -276,7 +277,7 @@ header {
 }
 
 .restaurant-gallery {
-    margin: 22px 0;
+    margin: 15px 0;
 }
 
 .restaurant-gallery img {
@@ -338,6 +339,50 @@ header {
 .star-rating {
     color: #ff452f;
     margin-top: 10px;
+}
+
+.modal-header .close {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 1;
+    padding: 4px 10px 5px;
+    text-shadow: 0 0 0 transparent;
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus,
+.modal-header .close:active {
+    opacity: 1!important;
+    outline: none;
+}
+
+.fa-times {
+    font-size: 18px;
+}
+
+.label-container {
+    display: flex;
+    margin-top: 21px;
+}
+
+.label-container h4 {
+    margin-top: 0;
+}
+
+.arrows {
+    margin-left: auto;
+}
+
+.arrows i {
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+.arrows i:hover {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 973px) {
