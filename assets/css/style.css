@@ -4,7 +4,7 @@ body {
 }
 
 .inner-container {
-    margin: 0 10%;
+    margin: 0 8%;
 }
 
 /* Background */
@@ -67,6 +67,11 @@ header {
 
 .dropdown {
     margin-left: 15px;
+}
+
+.dropdown-buttons {
+    display: flex;
+    margin-left: auto;
 }
 
 .btn.focus, .btn:focus {
@@ -392,12 +397,108 @@ header {
     cursor: pointer;
 }
 
+@media screen and (max-width: 1039px) {
+    .card img {
+        height: 206px;
+    }
+}
+
 @media screen and (max-width: 973px) {
+    .inner-container {
+        margin: 0 5%;
+    }
     .card {
         width: calc(50% - 20px);
+    }
+    .card img {
+        height: 258px;
     }
     .city-container {
         width: calc(50% - 20px);
         margin-bottom: 20px;
+    }
+    .modal-dialog {
+        max-width: 600px;
+    }
+    .restaurant-gallery img {
+        height: 156px;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    .card img {
+        height: 230px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .modal {
+        padding-right: 0!important;
+    }
+    .modal-body {
+        padding: 20px 35px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .inner-container {
+        margin: 0 8%;
+    }
+    .card {
+        width: calc(100% - 20px);
+    }    
+    .card img {
+        height: 300px;
+    }
+    .dropdown-container {
+        display: block;
+    }
+    .dropdown-container .listing-title {
+        margin-bottom: 20px;
+    }
+    .dropdown {
+        margin-right: 15px;
+        margin-left: 0;
+    }
+    .category {
+        font-size: 12px;
+        top: 17px;
+        left: 10px;
+    }
+    .category span {
+        padding: 9px 17px;
+    }
+}
+
+@media screen and (max-width: 583px) {
+    .city-container {
+        width: calc(100% - 20px);
+    }
+    .restaurant-gallery img {
+        height: 138px;
+    }
+    .star-rating {
+        font-size: 16px;
+    }
+    .modal-header img {
+        height: 309px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card img {
+        height: 260px;
+    }
+    .restaurant-gallery img {
+        height: 114px;
+    }
+    .modal-body {
+        padding: 20px 26px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .card img {
+        height: 220px;
     }
 }
