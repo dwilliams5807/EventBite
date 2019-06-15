@@ -71,8 +71,63 @@ if ("geolocation" in navigator) {
             // }
         },
         function error(error_message) {
-        // for when getting location results in an error
-        console.error('An error has occured while retrieving location', error_message)
+            // for when getting location results in an error
+            console.error('An error has occured while retrieving location', error_message)
+            // use default location (Austin, TX)
+            var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
+                // taxonomies: sports, concert, theater
+            if (categoryFilter == undefined) {
+                categoryFilter = "";
+            }
+            var queryURL = "https://api.seatgeek.com/2/events?client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter.toLowerCase();
+
+                
+            console.log(queryURL)
+            // send an AJAX request
+            // function seatGeek(categoryFilter) {
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+
+                $('.card-container').html("");
+                for (var i = 0; i < response.events.length; i++) {
+                    var element = response.events[i];
+                    var event = element.title;
+                    var date = element.datetime_local;
+                    var city = element.venue.city;
+                    var state = element.venue.state;
+                    var venue = element.venue.name;
+                    var category = element.taxonomies[0].name;
+                    var image = element.performers[0].image;
+
+                    // console.log(response) // our returned object
+                    // console.log("seatgeek - title: ", response.events[0].title)
+                    console.log(event, element)
+                    // console.log("seatgeek - venue name: ", response.events[0].venue.name)
+                    // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
+                    // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
+                    // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
+                    // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
+                    // console.log("seatgeek - event date: ", response.events[0].datetime_local)
+                    // console.log("seatgeek - event city: ", response.events[0].venue.city)
+                    // console.log("seatgeek - event state: ", response.events[0].venue.state)
+                    // console.log(moment(date).format("ddd, MMM D hh:mm A"));
+
+                    
+                    $('.card-container').append(
+                        '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
+                            '<p class="category"><span>' + category + '</span></p>' + 
+                            '<img src="' + image + '" class="card-img-top">' + 
+                            '<div class="card-body">' + 
+                                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' + 
+                                '<h5 class="card-title">' + event + '</h5>' + 
+                                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' + 
+                            '</div>' + 
+                        '</div>'
+                    );
+                }   
+            })
         }
     )
 } else {
