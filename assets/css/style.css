@@ -7,6 +7,7 @@ body {
     margin: 0 10%;
 }
 
+/* Background */
 .main-screen {
     background: url("../images/background.jpg");
     height: 100vh;
@@ -14,6 +15,7 @@ body {
     background-position: center;
 }
 
+/* Header */
 header {
     display: flex;
     align-items: center;
@@ -24,9 +26,9 @@ header {
     margin-right: auto;
     font-weight: 600;
     font-size: 20px;
-    /* color: white; */
 }
 
+/* Search Bar */
 .search-container, .search-input {
     /* background-color: #ededed; */
     background-color: white;
@@ -51,6 +53,54 @@ header {
     letter-spacing: 0.2px;
 }
 
+/* Event Dropdown Filter */
+.dropdown-container {
+    display: flex;
+    margin-top: 30px;
+}
+
+.dropdown {
+    margin-left: 15px;
+}
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
+
+.dropdown-toggle {
+    background-color: #e6e6e6;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.dropdown-toggle::after {
+    margin-left: 10px;
+}
+
+.push-right {
+    margin-left: auto;
+}
+
+.dropdown-menu {
+    top: 6px!important;
+    border-radius: 8px;
+    border: 1px solid #ededed;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dropdown-item:active {
+    background-color: #e6e6e6;
+    color: black;
+}
+
+/* Events */
 .event-listing, .featured-locations {
     margin-top: 25px;
     margin-bottom: 55px;
@@ -63,13 +113,14 @@ header {
     letter-spacing: 0.4px;
 }
 
-.card-container {
-    flex-wrap: wrap;
-}
-
+/* Event Card Info */
 .card-container, .location-container {
     display: flex;
     margin: 20px -10px;
+}
+
+.card-container {
+    flex-wrap: wrap;
 }
 
 .card {
@@ -133,28 +184,7 @@ header {
     font-size: 13px;
 }
 
-.location-container {
-    margin-bottom: 55px;
-    display: flex;
-}
-
-.city-container {
-    position: relative;
-    width: 25%;
-    margin: 0 10px;
-}
-
-.city-container img {
-    border-radius: 10px;
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-.city-container img:hover {
-    cursor: pointer;
-}
-
+/* Featured Locations */
 .travel-destination {
     position: absolute;
     bottom: 0;
@@ -169,14 +199,42 @@ header {
     margin-bottom: 0;
 }
 
+.location-container {
+    margin-bottom: 55px;
+    flex-wrap: wrap;
+}
+
+.city-container {
+    position: relative;
+    width: calc(25% - 20px);
+    margin: 0 10px;
+}
+
+.city-container img {
+    border-radius: 10px;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.city-container:hover {
+    cursor: pointer;
+}
+
+/* Event Modal */
 .modal-dialog {
     max-width: 750px;
+}
+
+.modal-content {
+    border-radius: 10px;
 }
 
 .modal-header {
     padding: 0;
     display: block;
     border-bottom: 0;
+    border-radius: 10px 10px 0 0;
 }
 
 .modal-header img {
@@ -198,16 +256,6 @@ header {
 .modal-body .date, .modal-body .location {
     font-size: 15px;
     text-transform: none;
-}
-
-.tickets {
-    padding: 10px 20px;
-    background-color: #fb5845;
-    color: white;
-    border-radius: 10px;
-    text-align: center;
-    width: 200px;
-    margin: auto;
 }
 
 .event h4 {
@@ -248,31 +296,6 @@ header {
     width: 0;
 }
 
-.dropdown-toggle {
-    background-color: #e6e6e6;
-    border-radius: 25px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.dropdown-toggle::after {
-    margin-left: 10px;
-}
-
-.dropdown-container {
-    display: flex;
-    margin-top: 30px;
-}
-
-.dropdown {
-    margin-left: 15px;
-}
-
-.push-right {
-    margin-left: auto;
-}
-
 .event-setting {
     display: flex;
 }
@@ -289,8 +312,12 @@ header {
     margin-bottom: 0;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 973px) {
     .card {
-        margin-bottom: 30px;
+        width: calc(50% - 20px);
+    }
+    .city-container {
+        width: calc(50% - 20px);
+        margin-bottom: 20px;
     }
 }
