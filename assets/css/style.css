@@ -52,7 +52,8 @@ header {
 }
 
 .event-listing, .featured-locations {
-    margin-top: 55px;
+    margin-top: 25px;
+    margin-bottom: 55px;
 }
 
 .listing-title {
@@ -165,7 +166,8 @@ header {
     margin-bottom: 0;
 }
 
-.travel-destination p {
+.modal-dialog {
+    max-width: 750px;
 }
 
 .modal-header {
@@ -176,12 +178,12 @@ header {
 
 .modal-header img {
     width: 100%;
-    height: 215px;
+    height: 360px;
     object-fit: cover;
 }
 
 .modal-body {
-    padding: 10px 30px;
+    padding: 20px 50px;
 }
 
 .event-title {
@@ -243,7 +245,46 @@ header {
     width: 0;
 }
 
+.dropdown-toggle {
+    background-color: #e6e6e6;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
 
+.dropdown-toggle::after {
+    margin-left: 10px;
+}
+
+.dropdown-container {
+    display: flex;
+    margin-top: 30px;
+}
+
+.dropdown {
+    margin-left: 15px;
+}
+
+.push-right {
+    margin-left: auto;
+}
+
+.event-setting {
+    display: flex;
+}
+
+.date-container, .time-container {
+    width: 50%;
+}
+
+.event-setting i {
+    margin-right: 10px;
+}
+
+.event-setting p {
+    margin-bottom: 0;
+}
 
 @media screen and (max-width: 768px) {
     .card {
