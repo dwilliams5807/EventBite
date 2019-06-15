@@ -276,11 +276,18 @@ header {
 }
 
 .restaurant-gallery {
-    margin: 15px 0;
+    margin: 22px 0;
 }
 
 .restaurant-gallery img {
     width: 100%;
+    border-radius: 10px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.restaurant-gallery img:hover {
+    cursor: pointer;
 }
 
 .restaurant-gallery .container-fluid {
@@ -302,6 +309,14 @@ header {
 .restaurant-gallery .row::-webkit-scrollbar {
     width: 0;
 }
+.restaurant-gallery p {
+    margin-bottom: 0px;
+}
+
+.restaurant-gallery h4 {
+    margin-top: 5px;
+    margin-bottom: 1px;
+}
 
 .event-setting {
     display: flex;
@@ -317,6 +332,12 @@ header {
 
 .event-setting p {
     margin-bottom: 0;
+    font-weight: 600;
+}
+
+.star-rating {
+    color: #ff452f;
+    margin-top: 10px;
 }
 
 @media screen and (max-width: 973px) {
