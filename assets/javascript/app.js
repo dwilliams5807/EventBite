@@ -116,22 +116,21 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 seatGeek();
 
 $(".date-menu a").on("click", function() {
-    $(".date-toggle:first-child").text($(this).text());
-    $(".date-toggle:first-child").val($(this).text());
-    $(".date-toggle:first-child").css({
-        "background-color": "#fb5845",
-        "color": "white"
-    })
+    toggle(".date-toggle:first-child", this);
 })
 
 $(".category-menu a").on("click", function() {
-    $(".category-toggle:first-child").text($(this).text());
-    $(".category-toggle:first-child").val($(this).text());
-    $(".category-toggle:first-child").css({
+    toggle(".category-toggle:first-child", this);
+})
+
+function toggle(toggleItem, menu) {
+    $(toggleItem).text($(menu).text());
+    $(toggleItem).val($(menu).text());
+    $(toggleItem).css({
         "background-color": "#fb5845",
         "color": "white"
     })
-})
+}
 
 $(".fa-chevron-right").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
