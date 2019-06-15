@@ -1,31 +1,35 @@
 body {
     font-family: "Open-Sans", sans-serif;
+    background-color: #f8f8f8;
 }
 
 .inner-container {
     margin: 0 10%;
 }
 
-/* .background {
+.main-screen {
     background: url("../images/background.jpg");
-    height: 80vh;
+    height: 100vh;
     background-size: cover;
-} */
+    background-position: center;
+}
 
 header {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    padding: 20px 10%;
 }
 
 .title {
     margin-right: auto;
     font-weight: 600;
     font-size: 20px;
+    /* color: white; */
 }
 
 .search-container, .search-input {
-    background-color: #ededed;
+    /* background-color: #ededed; */
+    background-color: white;
 }
 
 .search-container {
@@ -47,24 +51,34 @@ header {
     letter-spacing: 0.2px;
 }
 
-.event-listing h4 {
+.event-listing, .featured-locations {
+    margin-top: 55px;
+}
+
+.listing-title {
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.4px;
 }
 
-.card-container {
-    display: flex;
+.card-container, .location-container {
     margin: 20px -15px;
 }
 
 .card {
     position: relative;
+    box-shadow: 3px 3px 9px rgba(141,141,141,0.1);
+    border-radius: 10px;
 }
 
 .card, .card img {
-    border-radius: 0;
+    /* border-radius: 0; */
+    border: 0;
+}
+
+.card img {
+    border-radius: 10px 10px 0 0;
 }
 
 .card:hover {
@@ -110,6 +124,42 @@ header {
 .location i {
     margin-right: 8px;
     font-size: 13px;
+}
+
+.location-container {
+    margin-bottom: 55px;
+}
+
+.city-container {
+    position: relative;
+}
+
+.city-container img {
+    border-radius: 10px;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.city-container img:hover {
+    cursor: pointer;
+}
+
+.travel-destination {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align:center;
+    color: white;
+}
+
+.travel-destination h4 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.travel-destination p {
 }
 
 .modal-header {
@@ -167,7 +217,7 @@ header {
     width: 100%;
 }
 
-.container-fluid {
+.restaurant-gallery .container-fluid {
     padding: 0 10px;
 }
 
@@ -175,6 +225,19 @@ header {
     padding-right: 5px;
     padding-left: 5px;
 }
+
+.restaurant-gallery .row {
+    flex-wrap: nowrap;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+.restaurant-gallery .row::-webkit-scrollbar {
+    width: 0;
+}
+
+
 
 @media screen and (max-width: 768px) {
     .card {
