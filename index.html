@@ -12,6 +12,10 @@
     <!--Moment.js-->
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
+    <!--MapBox-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -33,12 +37,16 @@
             <div class="tagline">
                 <h1>Plan Your Next Adventure</h1>
                 <h3>Discover events and grab a quick bite near you!</h3>
-                <div class="search-container">
+                <div class="search-bar">
                     <form>
-                        <i class="fas fa-search"></i>
-                        <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue..." required>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <input type="text" class="location-input" placeholder="Austin, TX" required>
+                        <div class="term-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue..." required>
+                        </div>
+                        <div class="location-search">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" class="location-input" placeholder="Austin, TX" required>
+                        </div>
                         <button type="submit" class="search-button">Search</button>
                     </form>
                 </div>
@@ -114,122 +122,124 @@
     <!--Event Modal-->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src="https://seatgeek.com/images/performers-landscape/twenty-one-pilots-be1927/15670/19227/huge.jpg">
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-times"></i>
-                </button> -->
-            </div>
-            <div class="modal-body">
-                <h3 class="event-title">Twenty One Pilots</h3>
-                <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
-                <div class="event description">
-                    <div class="event-setting">
-                        <div class="date-container">
-                            <h4>Date</h4>
-                            <p><i class="far fa-calendar"></i>Sunday, June 23, 2019</p>
-                        </div>
-                        <div class="time-container">
-                            <h4>Time</h4>
-                            <p><i class="far fa-clock"></i>3:30 PM</p>
-                        </div>
-                    </div>
-                    <h4>Description</h4>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugiat
-                        debitis adipisci, blanditiis sunt dolorum! Doloremque tenetur nam dignissimos
-                        nisi architecto tempore in vitae dolor veritatis odit, placeat adipisci soluta.</p>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src="https://seatgeek.com/images/performers-landscape/twenty-one-pilots-be1927/15670/19227/huge.jpg">
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button> -->
                 </div>
-                <div class="event restaurants">
-                    <div class="label-container">
-                        <h4>Restaurants Nearby</h4>
-                        <div class="arrows">
-                            <i class="fas fa-chevron-left"></i>
-                            <i class="fas fa-chevron-right"></i>
+                <div class="modal-body">
+                    <h3 class="event-title">Twenty One Pilots</h3>
+                    <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
+                    <div class="event description">
+                        <div class="event-setting">
+                            <div class="date-container">
+                                <h4>Date</h4>
+                                <p><i class="far fa-calendar"></i>Sunday, June 23, 2019</p>
+                            </div>
+                            <div class="time-container">
+                                <h4>Time</h4>
+                                <p><i class="far fa-clock"></i>3:30 PM</p>
+                            </div>
                         </div>
+                        <h4>Description</h4>
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugiat
+                            debitis adipisci, blanditiis sunt dolorum! Doloremque tenetur nam dignissimos
+                            nisi architecto tempore in vitae dolor veritatis odit, placeat adipisci soluta.</p>
                     </div>
-                    <div class="restaurant-gallery">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-5">
-                                    <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                    <div id='map'></div>
+                    <div class="event restaurants">
+                        <div class="label-container">
+                            <h4>Restaurants Nearby</h4>
+                            <div class="arrows">
+                                <i class="fas fa-chevron-left"></i>
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div class="restaurant-gallery">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+                                        <div class="star-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <h4>Korea House</h4>
+                                        <p>2700 W Anderson Ln, Ste 501</p>
+                                        <p>Austin, TX 78757</p>
                                     </div>
-                                    <h4>Korea House</h4>
-                                    <p>2700 W Anderson Ln, Ste 501</p>
-                                    <p>Austin, TX 78757</p>
-                                </div>
-                                <div class="col-5">
-                                    <img src="https://images.unsplash.com/photo-1428515613728-6b4607e44363?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                    <div class="col-5">
+                                        <img src="https://images.unsplash.com/photo-1428515613728-6b4607e44363?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+                                        <div class="star-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <h4>Ramen Tatsu-Ya</h4>
+                                        <p>1600 E 6th St</p>
+                                        <p>Austin, TX 78702</p>
                                     </div>
-                                    <h4>Ramen Tatsu-Ya</h4>
-                                    <p>1600 E 6th St</p>
-                                    <p>Austin, TX 78702</p>
-                                </div>
-                                <div class="col-5">
-                                    <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                    <div class="col-5">
+                                        <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+                                        <div class="star-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <h4>Alamo Drafthouse</h4>
+                                        <p>1120 South Lamar Blvd</p>
+                                        <p>Austin, TX 78704</p>
                                     </div>
-                                    <h4>Alamo Drafthouse</h4>
-                                    <p>1120 South Lamar Blvd</p>
-                                    <p>Austin, TX 78704</p>
-                                </div>
-                                <div class="col-5">
-                                    <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                    <div class="col-5">
+                                        <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+                                        <div class="star-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <h4>Alamo Drafthouse</h4>
+                                        <p>1120 South Lamar Blvd</p>
+                                        <p>Austin, TX 78704</p>
                                     </div>
-                                    <h4>Alamo Drafthouse</h4>
-                                    <p>1120 South Lamar Blvd</p>
-                                    <p>Austin, TX 78704</p>
-                                </div>
-                                <div class="col-5">
-                                    <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
+                                    <div class="col-5">
+                                        <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+                                        <div class="star-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <h4>Alamo Drafthouse</h4>
+                                        <p>1120 South Lamar Blvd</p>
+                                        <p>Austin, TX 78704</p>
                                     </div>
-                                    <h4>Alamo Drafthouse</h4>
-                                    <p>1120 South Lamar Blvd</p>
-                                    <p>Austin, TX 78704</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <div class="close-modal" data-dismiss="modal">Close</div>
+                    <div class="tickets">View Tickets</div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <div class="close-modal" data-dismiss="modal">Close</div>
-                <div class="tickets">View Tickets</div>
-            </div>
-        </div>
         </div>
     </div>
 
     <!--Javascript-->
     <script type="text/javascript" src="assets/javascript/app.js"></script>
+
 </body>
 </html>
