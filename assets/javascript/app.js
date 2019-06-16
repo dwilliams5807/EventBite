@@ -212,6 +212,10 @@ var marker = new mapboxgl.Marker()
 .setLngLat([-97.7431, 30.2672])
 .addTo(map);
 
+$('#exampleModal').on('shown.bs.modal', function() {
+    map.resize();
+  });
+
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
 })
