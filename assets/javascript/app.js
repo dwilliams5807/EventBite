@@ -131,6 +131,17 @@ if ("geolocation" in navigator) {
                         // console.log("seatgeek - event state: ", response.events[0].venue.state)
                         // console.log(moment(date).format("ddd, MMM D hh:mm A"));
 
+                        if (image === null && category === "sports") {
+                            image = "assets/images/sports.jpg";
+                        } else if (image === null && category === "concert") {
+                            image = "assets/images/concert.jpg";
+                        } else if (image === null && category === "theater") {
+                            image = "assets/images/theater.jpg";
+                        } else if (image === null && category === "comedy") {
+                            image = "assets/images/comedy.jpg";
+                        } else {
+                            image = element.performers[0].image;
+                        }
                         
                         $('.card-container').append(
                             '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
