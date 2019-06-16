@@ -64,7 +64,6 @@ if ("geolocation" in navigator) {
                         } else {
                             image = element.performers[0].image;
                         }
-
                         
                         $('.card-container').append(
                             '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
@@ -154,3 +153,5 @@ $(".fa-chevron-left").on("click", function() {
     var position = $(".row").scrollLeft();
 	$(".row").animate({"scrollLeft": position - scrollWidth});
 })
+
+//element.url --> view tickets

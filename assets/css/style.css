@@ -267,6 +267,10 @@ header {
     padding: 20px 50px;
 }
 
+.modal-footer {
+    padding: 20px 40px;
+}
+
 .event-title {
     margin-top: 20px;
     margin-bottom: 6px;
@@ -394,6 +398,33 @@ header {
 }
 
 .arrows i:hover {
+    cursor: pointer;
+}
+
+.tickets {
+    background-color: #ff452f;
+    color: white;
+    border: 0;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tickets:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.close-modal {
+    font-weight: 600;
+    margin-right: 23px!important;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.close-modal:hover {
     cursor: pointer;
 }
 
