@@ -61,14 +61,26 @@ form {
     align-items: center;
 }
 
-.search-container {
+.search-bar {
     margin-top: 20px;
     width: 100%;
     border-radius: 10px;
     height: 55px;
 }
 
-.search-container, .search-input {
+.term-search {
+    width: 65%;
+    border-right: 2px solid #767676;
+}
+
+.location-search {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.search-bar, .search-input {
     background-color: white;
 }
 
@@ -77,15 +89,15 @@ form {
     border: 0;
     font-weight: 600;
     font-size: 15px;
+    padding-right: 15px;
 }
 
 .search-input {
-    width: 50%;
-    border-right: 2px solid #767676;
+    width: 80%;
 }
 
 .location-input {
-    margin-right: auto;
+    width: 80%;
 }
 
 .search-button {
@@ -95,10 +107,11 @@ form {
     color: white;
     border-radius: 0 10px 10px 0;
     font-weight: 600;
-    padding: 0 20px;
+    width: 100px;
+    /* padding: 0 20px; */
 }
 
-.search-container i {
+.search-bar i {
     color: #767676;
     margin: 0 20px;
 }
@@ -106,7 +119,9 @@ form {
 .search-input:focus,
 .search-input:active,
 .location-input:focus,
-.location-input:active {
+.location-input:active,
+.search-button:focus,
+.search-button:active {
     outline: none;
 }
 
@@ -537,6 +552,34 @@ form {
     }
 }
 
+@media screen and (max-width: 915px) {
+    form {
+        flex-direction: column;
+    }
+    .search-bar {
+        background-color: transparent;
+        height: auto;
+    }
+    .term-search, .location-search {
+        width: 100%;
+        border: 0;
+        border-radius: 10px;
+        background-color: white;
+        margin-bottom: 20px;
+    }
+    .search-input, .location-input {
+        width: 85%;
+    }
+    .location-search i {
+        margin-right: 27px;
+    }
+    .search-button {
+        width: 100%;
+        border-radius: 0px;
+        height: 45px;
+    }
+}
+
 @media screen and (max-width: 820px) {
     .card img {
         height: 230px;
@@ -583,6 +626,15 @@ form {
 }
 
 @media screen and (max-width: 583px) {
+    .search-input, .location-input {
+        width: 80%;
+    }
+    .search-bar i {
+        margin-right: 10px;
+    }
+    .location-search i {
+        margin-right: 15px;
+    }
     .city-container {
         width: calc(100% - 20px);
     }
@@ -606,6 +658,12 @@ form {
     }
     .modal-body {
         padding: 20px 26px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    .search-input, .location-input {
+        width: 75%;
     }
 }
 
