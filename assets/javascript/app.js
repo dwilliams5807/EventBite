@@ -3,13 +3,15 @@ var postalCode;
 var latitude;
 var longitude;
 var categoryFilter;
+var eventsArray = [];
+
 
 function seatGeek(categoryFilter) {
 if ("geolocation" in navigator) {
     // check if geolocation is supported/enabled on current browser
     navigator.geolocation.getCurrentPosition(
         function success(position) {
-            console.log(position)
+            console.log('user coordinates: ', position)
             // for when getting location is a success
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
@@ -23,13 +25,13 @@ if ("geolocation" in navigator) {
             var queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter.toLowerCase();
 
             
-            console.log(queryURL)
+            // console.log(queryURL)
             // send an AJAX request
             // function seatGeek(categoryFilter) {
                 $.ajax({
                     url: queryURL,
                     method: "GET"
-                }).then(function(response) {
+                }).done(function(response) {
 
                     $('.card-container').html("");
                     for (var i = 0; i < response.events.length; i++) {
@@ -38,22 +40,14 @@ if ("geolocation" in navigator) {
                         var date = element.datetime_local;
                         var city = element.venue.city;
                         var state = element.venue.state;
+                        var coords = element.venue.location;
+                        // debugger
                         var venue = element.venue.name;
-                        var category = element.taxonomies[0].name;
-                        var image = element.performers[0].image;
+                        category = element.taxonomies[0].name;
 
-                        // console.log(response) // our returned object
-                        // console.log("seatgeek - title: ", response.events[0].title)
-                        console.log(event, element)
-                        // console.log("seatgeek - venue name: ", response.events[0].venue.name)
-                        // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
-                        // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
-                        // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
-                        // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
-                        // console.log("seatgeek - event date: ", response.events[0].datetime_local)
-                        // console.log("seatgeek - event city: ", response.events[0].venue.city)
-                        // console.log("seatgeek - event state: ", response.events[0].venue.state)
-                        // console.log(moment(date).format("ddd, MMM D hh:mm A"));
+                        var image;
+                        // I moved the image if/elses up here above the eventsArray 
+                        // because I was getting the same error with the images
                         if (image === null && category === "sports") {
                             image = "assets/images/sports.jpg";
                         } else if (image === null && category === "concert") {
@@ -65,6 +59,36 @@ if ("geolocation" in navigator) {
                         } else {
                             image = element.performers[0].image;
                         }
+                        
+
+                        eventsArray.push({
+                            event: event,
+                            date: date,
+                            city: city,
+                            state: state,
+                            coords: coords,
+                            venue: venue,
+                            category: category,
+                            image: image
+                        });
+                        
+
+                        // var element = response.events[i];
+                        
+
+                        
+                        // console.log("seatgeek - title: ", response.events[0].title)
+                        // console.log(event, element)
+                        // console.log("seatgeek - venue name: ", response.events[0].venue.name)
+                        // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
+                        // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
+                        // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
+                        // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
+                        // console.log("seatgeek - event date: ", response.events[0].datetime_local)
+                        // console.log("seatgeek - event city: ", response.events[0].venue.city)
+                        // console.log("seatgeek - event state: ", response.events[0].venue.state)
+                        // console.log(moment(date).format("ddd, MMM D hh:mm A"));
+                        
                         
                         $('.card-container').append(
                             '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
@@ -78,6 +102,7 @@ if ("geolocation" in navigator) {
                             '</div>'
                         );
                     }   
+                    console.log("eventsArray", eventsArray);
                 })
             // }
         },
@@ -118,7 +143,7 @@ if ("geolocation" in navigator) {
                         var category = element.taxonomies[0].name;
                         var image = element.performers[0].image;
 
-                        // console.log(response) // our returned object
+                        console.log(response) // our returned object
                         // console.log("seatgeek - title: ", response.events[0].title)
                         console.log(event, element)
                         // console.log("seatgeek - venue name: ", response.events[0].venue.name)
@@ -143,6 +168,8 @@ if ("geolocation" in navigator) {
                             image = element.performers[0].image;
                         }
                         
+                        
+
                         $('.card-container').append(
                             '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
                                 '<p class="category"><span>' + category + '</span></p>' + 
@@ -154,6 +181,8 @@ if ("geolocation" in navigator) {
                                 '</div>' + 
                             '</div>'
                         );
+                        // update with map API for displaying current location (City, State)
+                        // $('.location-input').attr('placeholder', currentCity + ', ' + currentState);
                     }   
                 })
         }
