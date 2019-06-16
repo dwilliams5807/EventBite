@@ -10,7 +10,6 @@ body {
 /* Background */
 .main-screen {
     background: url("../images/background.jpg");
-    /* background: url("https://images.unsplash.com/photo-1560111225-45a56800eacd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80"); */
     height: 100vh;
     background-size: cover;
     background-position: center;
@@ -124,34 +123,6 @@ form {
 .search-button:active {
     outline: none;
 }
-
-/* .search-container, .search-input { */
-    /* background-color: #ededed; */
-    /* background-color: white;
-}
-
-.search-container {
-    padding: 5px 20px;
-    border-radius: 20px;
-}
-
-.search-container i {
-    font-size: 12px;
-    color: #767676;
-    margin: 0 6px;
-}
-
-.search-input {
-    border: 0;
-    font-weight: 600;
-    height: 28px;
-    font-size: 13px;
-    letter-spacing: 0.2px;
-}
-
-.search-input:focus, .search-input:active {
-    outline: none;
-}  */
 
 /* Event Dropdown Filter */
 .dropdown-container {
@@ -524,6 +495,16 @@ form {
     cursor: pointer;
 }
 
+#map {
+    width: 100%;
+    height: 300px;
+}
+
+.mapboxgl-canvas {
+    width: 100%!important;
+    height: auto!important;
+}
+
 @media screen and (max-width: 1039px) {
     .card img {
         height: 206px;
@@ -575,7 +556,7 @@ form {
     }
     .search-button {
         width: 100%;
-        border-radius: 0px;
+        border-radius: 20px;
         height: 45px;
     }
 }

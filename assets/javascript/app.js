@@ -198,6 +198,24 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 
 seatGeek();
 
+//google maps testing
+mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    //position is longitude, latitude
+    center: [-97.7431, 30.2672],
+    zoom: 13
+});
+
+var marker = new mapboxgl.Marker()
+.setLngLat([-97.7431, 30.2672])
+.addTo(map);
+
+$('#exampleModal').on('shown.bs.modal', function() {
+    map.resize();
+  });
+
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
 })
