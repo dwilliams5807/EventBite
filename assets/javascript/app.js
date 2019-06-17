@@ -67,9 +67,8 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             ""
             break;
     }
-    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
-
     eventsArray = [];
+    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
     seatGeek(queryURL);
 })
 
