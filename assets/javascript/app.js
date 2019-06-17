@@ -40,6 +40,7 @@ if ("geolocation" in navigator) {
     console.log('geolocation is not enabled on this browser')
 }
 
+//need to rename because both dropdowns are called dropdown
 $('.dropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
@@ -108,7 +109,6 @@ function seatGeek(seatGeekURL) {
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-            var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
             $.ajax({
                 url: restaurantURL,
@@ -164,9 +164,8 @@ function seatGeek(seatGeekURL) {
             // console.log("seatgeek - event state: ", response.events[0].venue.state)
             // console.log(moment(date).format("ddd, MMM D hh:mm A"));
 
-
             $('.card-container').append(
-                '<div class="card" data-toggle="modal" data-target="#exampleModal">' +
+                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
                 '<p class="category"><span>' + category + '</span></p>' +
                 '<img src="' + image + '" class="card-img-top">' +
                 '<div class="card-body">' +
@@ -281,9 +280,21 @@ $.ajax({
 // map.addControl(new mapboxgl.FullscreenControl());
 // map.addControl(new mapboxgl.NavigationControl());
 
-$('#exampleModal').on('shown.bs.modal', function() {
-    map.resize();
-});
+// $('#exampleModal').on('shown.bs.modal', function() {
+//     map.resize();
+// });
+
+$(".card-container").on("click", ".card", function() {
+    // console.log("this: ", $(this));
+    var index = $(this).attr('data-index');
+    var e = eventsArray[index];
+    // console.log(index);
+    $('.modal-header > img').attr('src', e.image);
+    $('.event-title').text(e.event);
+    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
+    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
+    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+})
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
