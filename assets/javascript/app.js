@@ -332,15 +332,30 @@ $(".card-container").on("click", ".card", function() {
             //var resImage = resElement.photos[0].photo.url;
             var resImage = resElement.featured_image;
             var resAddress = resElement.location.address;
+            var resPrice = resElement.price_range;
             //console.log(resElement.photos[0].photo.url);
             if (resImage === "") {
                 resImage = "assets/images/restaurant.jpg";
             }
+            
+            if (resRating === 0) {
+                resRating = "No Rating";
+            }
+
+            if (resPrice === 1) {
+                resPrice = "$";
+            } else if (resPrice === 2) {
+                resPrice = "$$";
+            } else if (resPrice === 3) {
+                resPrice = "$$$";
+            } else if (resPrice === 4) {
+                resPrice = "$$$$";
+            }
 
             $(".row").append("<div class='col-5'> <img src='" +
-                resImage + "'> <div class='star-rating'>" +
-                resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+                resImage + "'> <div class='res-info'> <div class='star-rating'>"
+                + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
     mapBox();
-})
+});
