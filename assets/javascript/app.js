@@ -179,6 +179,7 @@ $(".city-container").on("click", function() {
         longitude = -119.4179;
         latitude = 36.7783;
     }
+    eventsArray = [];
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
 })
