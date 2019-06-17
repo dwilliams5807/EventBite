@@ -273,6 +273,7 @@ seatGeek();
 //call ajax
 //maybe change the text from "upcoming events" to "upcoming events in <location>"
 //clear value from term search, but not location search
+//reset values on dropdown if utilized before search
 
 //store longlat of event as data attribute
 //use longlat for zomato api and map api
@@ -305,6 +306,9 @@ var map = new mapboxgl.Map({
 var marker = new mapboxgl.Marker()
 .setLngLat([-97.7431, 30.2672])
 .addTo(map);
+
+map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl());
 
 $('#exampleModal').on('shown.bs.modal', function() {
     map.resize();
