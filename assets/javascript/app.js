@@ -118,7 +118,7 @@ function seatGeek(seatGeekURL) {
                 image = element.performers[0].image;
             }
 
-            eventsArray = [];
+            // eventsArray = [];
 
             eventsArray.push({
                 event: event,
