@@ -102,22 +102,15 @@ function seatGeek(seatGeekURL) {
 
 
             // creates variables to store lat and lon of event location for restaurant api
-            var locationLat = response.events[0].venue.location.lat;
-            var locationLon = response.events[0].venue.location.lon;
-            console.log(response) // our returned object
+            // var locationLat = response.events[0].venue.location.lat;
+            // var locationLon = response.events[0].venue.location.lon;
+            // console.log(response) // our returned object
 
             // for passing to zomato api
             // console.log("seatgeek - venue location: ", locationLat, locationLon);
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-
-            $.ajax({
-                url: restaurantURL,
-                method: "GET"
-            }).then(function(response) {
-                console.log(response);
-            })
 
 
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
@@ -302,6 +295,8 @@ $(".card-container").on("click", ".card", function() {
     $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
     $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
     $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+
+    $('.tickets')
 })
 
 $(".date-menu a").on("click", function() {
@@ -349,6 +344,7 @@ $(".card-container").on("click", ".card", function() {
         var resName = resElement.name;
         var resRating = resElement.user_rating.aggregate_rating;
         var resImage = resElement.photos[0].photo.url;
+        console.log("restaurant images: ", response.restaurants[i].restaurant.photos);
         var resAddress = resElement.location.address;
 
         $(".row").append("<div class='col-5'> <img src='"
