@@ -118,6 +118,7 @@ function seatGeek(seatGeekURL) {
                 image = element.performers[0].image;
             }
 
+            eventsArray = [];
 
             eventsArray.push({
                 event: event,
@@ -154,12 +155,12 @@ function seatGeek(seatGeekURL) {
                 '<div class="card-body">' +
                 '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
                 '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
                 '</div>' +
                 '</div>'
             );
         }
-        console.log("eventsArray", eventsArray);
+        // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
     })
 }
 
@@ -280,6 +281,7 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
+
     //seatgeek api
     var index = $(this).attr('data-index');
     var e = eventsArray[index];
@@ -297,7 +299,7 @@ $(".card-container").on("click", ".card", function() {
         url: wikiURL,
         method: "GET"
     }).done(function(response) {
-        console.log(response);
+        // console.log(response);
     });
 
     //zomato api
@@ -309,7 +311,7 @@ $(".card-container").on("click", ".card", function() {
         url: restaurantURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
+        // console.log(response);
         $('.row').html("");
         for (var i = 0; i < response.restaurants.length; i++) {
             var resElement = response.restaurants[i].restaurant;
@@ -318,15 +320,30 @@ $(".card-container").on("click", ".card", function() {
             //var resImage = resElement.photos[0].photo.url;
             var resImage = resElement.featured_image;
             var resAddress = resElement.location.address;
+            var resPrice = resElement.price_range;
             //console.log(resElement.photos[0].photo.url);
             if (resImage === "") {
                 resImage = "assets/images/restaurant.jpg";
             }
+            
+            if (resRating === 0) {
+                resRating = "No Rating";
+            }
+
+            if (resPrice === 1) {
+                resPrice = "$";
+            } else if (resPrice === 2) {
+                resPrice = "$$";
+            } else if (resPrice === 3) {
+                resPrice = "$$$";
+            } else if (resPrice === 4) {
+                resPrice = "$$$$";
+            }
 
             $(".row").append("<div class='col-5'> <img src='" +
-                resImage + "'> <div class='star-rating'>" +
-                resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+                resImage + "'> <div class='res-info'> <div class='star-rating'>"
+                + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
     mapBox();
-})
+});
