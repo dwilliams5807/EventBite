@@ -292,6 +292,22 @@ seatGeek();
 //append info to html
 //})
 
+//austin longlat
+//longitude = -97.7431;
+//latitude = 30.2672;
+
+//orlando longlat
+//longitude = 28.5383;
+//latitude = 81.3792;
+
+//nyc longlat
+//longitude = 40.7128;
+//latitude = 74.0060;
+
+//venice longlat
+//longitude = 45.4408;
+//latitude = 12.3155;
+
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
 mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
