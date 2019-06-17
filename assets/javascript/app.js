@@ -40,6 +40,7 @@ if ("geolocation" in navigator) {
     console.log('geolocation is not enabled on this browser')
 }
 
+//need to rename because both dropdowns are called dropdown
 $('.dropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
@@ -162,7 +163,6 @@ function seatGeek(seatGeekURL) {
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
             // console.log("seatgeek - event state: ", response.events[0].venue.state)
             // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-            
             
             $('.card-container').append(
                 '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
