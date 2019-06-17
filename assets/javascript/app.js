@@ -4,8 +4,8 @@ var latitude;
 var longitude;
 var categoryFilter;
 var eventsArray = [];
-
-
+var queryURL;
+var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
 
 if ("geolocation" in navigator) {
     // check if geolocation is supported/enabled on current browser
@@ -16,8 +16,9 @@ if ("geolocation" in navigator) {
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
             // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
-
-            seatGeek(categoryFilter);
+            // if it's the first search and there are no filter terms, set filter to empty string
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+            seatGeek(queryURL);
             // }
         },
         function error(error_message) {
@@ -29,8 +30,8 @@ if ("geolocation" in navigator) {
             latitude = 30.2672;
             longitude = -97.7431;
             
-
-            seatGeek(categoryFilter);
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+            seatGeek(queryURL);
         }
     )
 } else {
@@ -38,8 +39,6 @@ if ("geolocation" in navigator) {
     // get your location some other way
     console.log('geolocation is not enabled on this browser')
 }
-
-
 
 $('.dropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
@@ -63,28 +62,22 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             break;
         default: ""
             break;
-    }
-    seatGeek(categoryFilter);
+    }    
+    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    seatGeek(queryURL);
 })
+
+
 //    if user refuses, they can use search bar
 
 //  search bar
 //    accept city name / zip code
-function seatGeek(categoryFilter) {
-    var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
+function seatGeek(seatGeekURL) {
     // taxonomies: sports, concert, theater
-    // if it's the first search and there are no filter terms, set filter to empty string
-    if (categoryFilter == undefined) {
-        categoryFilter = "";
-    }
-    var queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter.toLowerCase();
-
-    
     // console.log(queryURL)
     // send an AJAX request
-    // function seatGeek(categoryFilter) {
     $.ajax({
-        url: queryURL,
+        url: seatGeekURL,
         method: "GET"
     }).done(function(response) {
 
@@ -105,28 +98,23 @@ function seatGeek(categoryFilter) {
             
 
             // creates variables to store lat and lon of event location for restaurant api
-            var locationLat = response.events[0].venue.location.lat;
-            var locationLon = response.events[0].venue.location.lon;
-            // console.log(response) // our returned object
-            // console.log("seatgeek - title: ", response.events[0].title)
-            // console.log(event, element); // Event Name and Event Object
-            // console.log("seatgeek - venue name: ", response.events[0].venue.name)
-            // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
-            // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
+            // var locationLat = response.events[0].venue.location.lat;
+            // var locationLon = response.events[0].venue.location.lon;
+            console.log(response) // our returned object
             
             // for passing to zomato api
             // console.log("seatgeek - venue location: ", locationLat, locationLon);
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-            var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+        //     var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
-            $.ajax({
-            url: restaurantURL,
-            method: "GET"
-        }).then(function(response) {
-            console.log (response);
-        })
+        //     $.ajax({
+        //     url: restaurantURL,
+        //     method: "GET"
+        // }).then(function(response) {
+        //     console.log (response);
+        // })
 
             
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
@@ -264,21 +252,21 @@ function seatGeek(categoryFilter) {
 
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
-mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    //position is longitude, latitude
-    center: [-97.7431, 30.2672],
-    zoom: 13
-});
+// mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
+// var map = new mapboxgl.Map({
+//     container: 'map',
+//     style: 'mapbox://styles/mapbox/streets-v11',
+//     //position is longitude, latitude
+//     center: [-97.7431, 30.2672],
+//     zoom: 13
+// });
 
-var marker = new mapboxgl.Marker()
-.setLngLat([-97.7431, 30.2672])
-.addTo(map);
+// var marker = new mapboxgl.Marker()
+// .setLngLat([-97.7431, 30.2672])
+// .addTo(map);
 
-map.addControl(new mapboxgl.FullscreenControl());
-map.addControl(new mapboxgl.NavigationControl());
+// map.addControl(new mapboxgl.FullscreenControl());
+// map.addControl(new mapboxgl.NavigationControl());
 
 $('#exampleModal').on('shown.bs.modal', function() {
     map.resize();
