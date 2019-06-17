@@ -183,10 +183,6 @@ $(".city-container").on("click", function() {
     seatGeek(queryURL);
 })
 
-// function featuredLocation() {
-
-// }
-
 //to do
 //element.url --> view tickets
 //link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
