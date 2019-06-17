@@ -118,6 +118,7 @@ function seatGeek(seatGeekURL) {
                 image = element.performers[0].image;
             }
 
+            eventsArray = [];
 
             eventsArray.push({
                 event: event,
@@ -154,12 +155,12 @@ function seatGeek(seatGeekURL) {
                 '<div class="card-body">' +
                 '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
                 '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
                 '</div>' +
                 '</div>'
             );
         }
-        console.log("eventsArray", eventsArray);
+        // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
     })
 }
 
@@ -262,18 +263,6 @@ function mapBox() {
     map.resize();
 }
 
-$(".card-container").on("click", ".card", function() {
-    // console.log("this: ", $(this));
-    var index = $(this).attr('data-index');
-    var e = eventsArray[index];
-    // console.log(index);
-    $('.modal-header > img').attr('src', e.image);
-    $('.event-title').text(e.event);
-    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
-    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
-    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
-})
-
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
 })
@@ -304,25 +293,37 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
-    resLat = $(this).attr("data-lat");
-    resLon = $(this).attr("data-lon");
-    var performerTitle = $(this).children(".card-body").children(".card-title").text();
-    var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+
+    //seatgeek api
+    var index = $(this).attr('data-index');
+    var e = eventsArray[index];
+    $('.modal-header > img').attr('src', e.image);
+    $('.event-title').text(e.event);
+    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
+    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
+    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+        
     // Wikipedia API
+    var performerTitle = $(this).children(".card-body").children(".card-title").text();
     var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
 
     $.ajax({
         url: wikiURL,
         method: "GET"
     }).done(function(response) {
-        console.log(response);
+        // console.log(response);
     });
+
+    //zomato api
+    resLat = $(this).attr("data-lat");
+    resLon = $(this).attr("data-lon");
+    var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
     $.ajax({
         url: restaurantURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
+        // console.log(response);
         $('.row').html("");
         for (var i = 0; i < response.restaurants.length; i++) {
             var resElement = response.restaurants[i].restaurant;
@@ -349,7 +350,7 @@ $(".card-container").on("click", ".card", function() {
                 resPrice = "$$$";
             } else if (resPrice === 4) {
                 resPrice = "$$$$";
-            }else 
+            }
 
             $(".row").append("<div class='col-5'> <img src='" +
                 resImage + "'> <div class='res-info'> <div class='star-rating'>"
