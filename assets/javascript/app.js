@@ -102,7 +102,18 @@ function seatGeek(categoryFilter) {
             var image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
-            
+            console.log(i)
+            // function new Event(event, date, city, state, coords, venue, tickets, category, image) {
+            //     this.event = event;
+            //     this.date = date;
+            //     this.city = city;
+            //     this.state = state;
+            //     this.coords = coords;
+            //     this.venue = venue;
+            //     this.tickets = tickets;
+            //     this.category = category;
+            //     this.image = image;
+            // }
 
             // creates variables to store lat and lon of event location for restaurant api
             var locationLat = response.events[0].venue.location.lat;
@@ -122,11 +133,11 @@ function seatGeek(categoryFilter) {
             var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
             $.ajax({
-            url: restaurantURL,
-            method: "GET"
-        }).then(function(response) {
-            console.log (response);
-        })
+                url: restaurantURL,
+                method: "GET"
+            }).then(function(response) {
+                console.log (response);
+            })
 
             
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
@@ -147,6 +158,18 @@ function seatGeek(categoryFilter) {
             }
             
 
+            // function Event(event, date, city, state, coords, venue, tickets, category, image) {
+            //     this.event = event;
+            //     this.date = date;
+            //     this.city = city;
+            //     this.state = state;
+            //     this.coords = coords;
+            //     this.venue = venue;
+            //     this.tickets = tickets;
+            //     this.category = category;
+            //     this.image = image;
+            // }
+
             eventsArray.push({
                 event: event,
                 date: date,
@@ -154,6 +177,7 @@ function seatGeek(categoryFilter) {
                 state: state,
                 coords: coords,
                 venue: venue,
+                tickets: tickets,
                 category: category,
                 image: image
             });
