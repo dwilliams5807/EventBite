@@ -40,6 +40,7 @@ if ("geolocation" in navigator) {
     console.log('geolocation is not enabled on this browser')
 }
 
+//need to rename because both dropdowns are called dropdown
 $('.dropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
@@ -92,7 +93,7 @@ function seatGeek(seatGeekURL) {
             var tickets = element.url; // ticket URL
             var venue = element.venue.name;
             category = element.taxonomies[0].name;
-            var image;
+            var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
             
@@ -163,7 +164,6 @@ function seatGeek(seatGeekURL) {
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
             // console.log("seatgeek - event state: ", response.events[0].venue.state)
             // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-            
             
             $('.card-container').append(
                 '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' + 
@@ -268,7 +268,6 @@ function seatGeek(seatGeekURL) {
 
 // map.addControl(new mapboxgl.FullscreenControl());
 // map.addControl(new mapboxgl.NavigationControl());
-
 $(".card-container").on("click", ".card", function() {
     // console.log("this: ", $(this));
     var index = $(this).attr('data-index');
@@ -281,9 +280,9 @@ $(".card-container").on("click", ".card", function() {
     $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
 })
 
-// $('#exampleModal').on('shown.bs.modal', function() {
-//     map.resize();
-// });
+$('#exampleModal').on('shown.bs.modal', function() {
+    map.resize();
+});
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
