@@ -154,7 +154,7 @@ function seatGeek(seatGeekURL) {
                 '<div class="card-body">' +
                 '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
                 '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
                 '</div>' +
                 '</div>'
             );

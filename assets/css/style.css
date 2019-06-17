@@ -259,12 +259,12 @@ form {
     margin-bottom: 5px;
 }
 
-.location {
+.location, .card-location {
     font-size: 14px;
     font-weight: 600;
 }
 
-.location i {
+.location i, .card-location i {
     margin-right: 8px;
     font-size: 13px;
 }
