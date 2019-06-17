@@ -300,4 +300,3 @@ $(".fa-chevron-left").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
 	$(".row").animate({"scrollLeft": position - scrollWidth});
-})
