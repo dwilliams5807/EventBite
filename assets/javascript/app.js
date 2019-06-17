@@ -40,6 +40,7 @@ if ("geolocation" in navigator) {
     console.log('geolocation is not enabled on this browser')
 }
 
+//need to rename because both dropdowns are called dropdown
 $('.dropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
@@ -98,18 +99,16 @@ function seatGeek(seatGeekURL) {
             
 
             // creates variables to store lat and lon of event location for restaurant api
-            var locationLat = response.events[0].venue.location.lat;
-            var locationLon = response.events[0].venue.location.lon;
-            console.log(response) // our returned object
+            // var locationLat = response.events[0].venue.location.lat;
+            // var locationLon = response.events[0].venue.location.lon;
+            // console.log(response) // our returned object
             
             // for passing to zomato api
             // console.log("seatgeek - venue location: ", locationLat, locationLon);
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-            
-        
-            
+
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -138,6 +137,7 @@ function seatGeek(seatGeekURL) {
                 category: category,
                 image: image
             });
+
             
 
             // var element = response.events[i];
@@ -156,9 +156,8 @@ function seatGeek(seatGeekURL) {
             // console.log("seatgeek - event state: ", response.events[0].venue.state)
             // console.log(moment(date).format("ddd, MMM D hh:mm A"));
             
-            
             $('.card-container').append(
-                '<div class="card" data-toggle="modal" data-target="#exampleModal">' + 
+                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' + 
                     '<p class="category"><span>' + category + '</span></p>' + 
                     '<img src="' + image + '" class="card-img-top">' + 
                     '<div class="card-body">' + 
@@ -261,9 +260,9 @@ function seatGeek(seatGeekURL) {
 // map.addControl(new mapboxgl.FullscreenControl());
 // map.addControl(new mapboxgl.NavigationControl());
 
-$('#exampleModal').on('shown.bs.modal', function() {
-    map.resize();
-});
+// $('#exampleModal').on('shown.bs.modal', function() {
+//     map.resize();
+// });
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
@@ -294,9 +293,10 @@ $(".fa-chevron-left").on("click", function() {
 	$(".row").animate({"scrollLeft": position - scrollWidth});
 })
 
-function resturantCall(){
-
-var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+$(".card-container").on("click", ".card", function() {
+    var resLat = $(this).attr("data-lat");
+var resLon = $(this).attr("data-lon");
+var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
 $.ajax({
 url: restaurantURL,
@@ -304,17 +304,18 @@ method: "GET"
 }).then(function(response) {
 console.log (response);
 $('.row').html("");
-for (var i = 0; i < response.events.length; i++) {
+for (var i = 0; i < response.restaurants.length; i++) {
 var resElement = response.restaurants[i].restaurant;
 var resName = resElement.name;
 var resRating = resElement.user_rating.aggregate_rating;
 var resImage = resElement.photos[0].photo.url;
 var resAddress = resElement.location.address;
-var resLat = resElement.location.latitude;
-var resLon = resElement.location.longitude;
+
 
 
 $(".row").append("<div class='col-5'> <img src='"
 + resImage + "'> <div class='star-rating'>"
 + resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
-}})}
+}}
+)
+})
