@@ -100,10 +100,7 @@ function seatGeek(seatGeekURL) {
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 9cab600eb93e95c57dc5efc11825ad3b629dfab8
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -307,12 +304,6 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
-<<<<<<< HEAD
-
-var resLat = $(this).attr("data-lat");
-var resLon = $(this).attr("data-lon");
-var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
-=======
     resLat = $(this).attr("data-lat");
     resLon = $(this).attr("data-lon");
     var performerTitle = $(this).children(".card-body").children(".card-title").text();
@@ -326,7 +317,6 @@ var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=
     }).done(function(response) {
         console.log(response);
     });
->>>>>>> 9cab600eb93e95c57dc5efc11825ad3b629dfab8
 
     $.ajax({
         url: restaurantURL,
@@ -338,13 +328,33 @@ var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=
             var resElement = response.restaurants[i].restaurant;
             var resName = resElement.name;
             var resRating = resElement.user_rating.aggregate_rating;
-            var resImage = resElement.photos[0].photo.url;
+            //var resImage = resElement.photos[0].photo.url;
+            var resImage = resElement.featured_image;
             var resAddress = resElement.location.address;
+            var resPrice = resElement.price_range;
+            //console.log(resElement.photos[0].photo.url);
+            if (resImage === "") {
+                resImage = "assets/images/restaurant.jpg";
+            }
+            
+            if (resRating === 0) {
+                resRating = "No Rating";
+            }
+
+            if (resPrice === 1) {
+                resPrice = "$";
+            } else if (resPrice === 2) {
+                resPrice = "$$";
+            } else if (resPrice === 3) {
+                resPrice = "$$$";
+            } else if (resPrice === 4) {
+                resPrice = "$$$$";
+            }else 
 
             $(".row").append("<div class='col-5'> <img src='" +
-                resImage + "'> <div class='star-rating'>" +
-                resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+                resImage + "'> <div class='res-info'> <div class='star-rating'>"
+                + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
     mapBox();
-})
+});
