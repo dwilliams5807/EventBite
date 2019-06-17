@@ -112,12 +112,6 @@ function seatGeek(seatGeekURL) {
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
 
-            $.ajax({
-                url: restaurantURL,
-                method: "GET"
-            }).then(function(response) {
-                console.log(response);
-            })
 
 
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
@@ -183,15 +177,7 @@ function seatGeek(seatGeekURL) {
 }
 
 
-// Wikipedia API
-var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=";
 
-$.ajax({
-    url: wikiURL,
-    method: "GET"
-}).done(function(response) {
-
-});
 
 $(".city-container").on("click", function() {
     var destination = $(this).children(".travel-destination").children("h4").text();
@@ -284,8 +270,8 @@ function mapBox() {
     });
 
     var marker = new mapboxgl.Marker()
-    .setLngLat([resLon, resLat])
-    .addTo(map);
+        .setLngLat([resLon, resLat])
+        .addTo(map);
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
@@ -330,7 +316,7 @@ $(".fa-chevron-right").on("click", function() {
 $(".fa-chevron-left").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
-	$(".row").animate({"scrollLeft": position - scrollWidth});
+    $(".row").animate({ "scrollLeft": position - scrollWidth });
 })
 
 $(".card-container").on("click", ".card", function() {
@@ -338,22 +324,33 @@ $(".card-container").on("click", ".card", function() {
     resLon = $(this).attr("data-lon");
     var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
+    // Wikipedia API
+    var performerTitle = $(this).children(".card-body").children(".card-title").text();
+    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
+
+    $.ajax({
+        url: wikiURL,
+        method: "GET"
+    }).done(function(response) {
+
+    });
+
     $.ajax({
         url: restaurantURL,
         method: "GET"
-        }).then(function(response) {
-        console.log (response);
+    }).then(function(response) {
+        console.log(response);
         $('.row').html("");
         for (var i = 0; i < response.restaurants.length; i++) {
-        var resElement = response.restaurants[i].restaurant;
-        var resName = resElement.name;
-        var resRating = resElement.user_rating.aggregate_rating;
-        var resImage = resElement.photos[0].photo.url;
-        var resAddress = resElement.location.address;
+            var resElement = response.restaurants[i].restaurant;
+            var resName = resElement.name;
+            var resRating = resElement.user_rating.aggregate_rating;
+            var resImage = resElement.photos[0].photo.url;
+            var resAddress = resElement.location.address;
 
-        $(".row").append("<div class='col-5'> <img src='"
-        + resImage + "'> <div class='star-rating'>"
-        + resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+            $(".row").append("<div class='col-5'> <img src='" +
+                resImage + "'> <div class='star-rating'>" +
+                resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
     mapBox();
