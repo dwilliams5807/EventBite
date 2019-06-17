@@ -18,7 +18,6 @@ if ("geolocation" in navigator) {
             // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
 
             seatGeek(categoryFilter);
-            
             // }
         },
         function error(error_message) {
