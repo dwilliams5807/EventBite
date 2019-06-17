@@ -72,11 +72,24 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
     seatGeek(queryURL);
 })
 
-
 //    if user refuses, they can use search bar
-
 //  search bar
 //    accept city name / zip code
+$("form").on("submit", function(event) {
+    event.preventDefault();
+    var searchInput = $(".search-input").val();
+    var location = $(".location-input").val();
+    //when user inputs city, state, need to geocode into longlat
+    //do we want to allow zipcode also?
+    //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+    //seatGeek(queryURL);
+    $(".search-input").val("");
+    $(".location-input").val("");
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
+})
+
 function seatGeek(seatGeekURL) {
     // taxonomies: sports, concert, theater
     // console.log(queryURL)
@@ -181,23 +194,25 @@ $(".city-container").on("click", function() {
     eventsArray = [];
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
 })
 
 //to do
 //element.url --> view tickets
 //link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
-//use a promise so that map loading does not interfere with api loading
 //if no events show up in a certain category, display an error page
 
 //create constructor for api calls
 //seatgeek api will be called about 6-7 times,
 //so we don't want to write the same code 6-7 times
-//1. geolocation
-//2. if user declines geolocation
-//3. when user chooses a category from dropdown**
+//1. geolocation - done
+//2. if user declines geolocation - done
+//3. when user chooses a category from dropdown** - done
 //4. when user filters by date from dropdown**
 //5. when user enters a search input
-//6. when displaying information on the modal
+//6. when displaying information on the modal - done
 //7. when user clicks on a featured location -- need to find the longlat for featured locations
 //dropdown will be pertaining to the featured location
 //maybe another ajax call when user makes a search and uses the dropdown
@@ -244,7 +259,10 @@ function mapBox() {
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
-    map.resize();
+
+    map.on('load', function() {
+        map.resize();
+    });
 }
 
 $(".date-menu a").on("click", function() {
@@ -277,7 +295,6 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
-
     //seatgeek api
     var index = $(this).attr('data-index');
     var e = eventsArray[index];
