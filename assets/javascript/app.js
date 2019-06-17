@@ -118,6 +118,7 @@ function seatGeek(seatGeekURL) {
                 image = element.performers[0].image;
             }
 
+            eventsArray = [];
 
             eventsArray.push({
                 event: event,
@@ -154,12 +155,12 @@ function seatGeek(seatGeekURL) {
                 '<div class="card-body">' +
                 '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
                 '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
                 '</div>' +
                 '</div>'
             );
         }
-        console.log("eventsArray", eventsArray);
+        // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
     })
 }
 
@@ -310,7 +311,7 @@ $(".card-container").on("click", ".card", function() {
         url: wikiURL,
         method: "GET"
     }).done(function(response) {
-        console.log(response);
+        // console.log(response);
     });
 
     //zomato api
@@ -322,7 +323,7 @@ $(".card-container").on("click", ".card", function() {
         url: restaurantURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
+        // console.log(response);
         $('.row').html("");
         for (var i = 0; i < response.restaurants.length; i++) {
             var resElement = response.restaurants[i].restaurant;
