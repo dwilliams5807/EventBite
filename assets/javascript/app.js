@@ -170,20 +170,18 @@ $(".city-container").on("click", function() {
         longitude = -97.7431;
         latitude = 30.2672;
     } else if (destination === "Orlando, FL") {
-        longitude = 28.5383;
-        latitude = 81.3792;
+        longitude = -81.3792;
+        latitude = 28.5383;
     } else if (destination === "New York City, NY") {
-        longitude = 40.7128;
-        latitude = 74.0060;
-    } else if (destination === "Venice, ITL") {
-        longitude = 45.4408;
-        latitude = 12.3155;
+        longitude = -74.0060;
+        latitude = 40.7128;
+    } else if (destination === "Los Angeles, CA") {
+        longitude = -119.4179;
+        latitude = 36.7783;
     }
+    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+    seatGeek(queryURL);
 })
-
-// function featuredLocation() {
-
-// }
 
 //to do
 //element.url --> view tickets
@@ -222,25 +220,11 @@ $(".city-container").on("click", function() {
 //clear value from term search, but not location search
 //reset values on dropdown if utilized before search
 
-//store longlat of event as data attribute  // This is stored in the eventsArray as coords -Mark
-//use longlat for zomato api and map api
-
 //$("event div").on("click, function() {
-//empty the modal content
-//get longlat from data attribute and pass on as a parameter for queryurl for zomato and map
 //get event name for wikipedia api
-//call zomato api, wikipedia api, map api
-//info needed from seatgeek: image, event title, location, date, time, ticket url
-//could possibly get this info from using "this" and getting it from the div
-//or we can make a separate ajax call
-//info needed from zomato: image, rating, restaurant name, location
 //info needed from wikipedia: description
-//info needed from mapbox: map
-//append info to html
 //})
 
-//if zomato image does not show,
-//have a placeholder image
 
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
