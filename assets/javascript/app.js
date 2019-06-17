@@ -328,8 +328,13 @@ $(".card-container").on("click", ".card", function() {
             var resElement = response.restaurants[i].restaurant;
             var resName = resElement.name;
             var resRating = resElement.user_rating.aggregate_rating;
-            var resImage = resElement.photos[0].photo.url;
+            //var resImage = resElement.photos[0].photo.url;
+            var resImage = resElement.featured_image;
             var resAddress = resElement.location.address;
+            //console.log(resElement.photos[0].photo.url);
+            if (resImage === "") {
+                resImage = "assets/images/restaurant.jpg";
+            }
 
             $(".row").append("<div class='col-5'> <img src='" +
                 resImage + "'> <div class='star-rating'>" +
