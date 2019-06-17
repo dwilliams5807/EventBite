@@ -96,7 +96,7 @@ function seatGeek(categoryFilter) {
             var city = element.venue.city;
             var state = element.venue.state;
             var coords = element.venue.location;
-            // debugger
+            var tickets = element.url; // ticket URL
             var venue = element.venue.name;
             category = element.taxonomies[0].name;
             var image;
@@ -109,13 +109,13 @@ function seatGeek(categoryFilter) {
             var locationLon = response.events[0].venue.location.lon;
             // console.log(response) // our returned object
             // console.log("seatgeek - title: ", response.events[0].title)
-            console.log(event, element);
+            // console.log(event, element); // Event Name and Event Object
             // console.log("seatgeek - venue name: ", response.events[0].venue.name)
             // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
             // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
             
             // for passing to zomato api
-            console.log("seatgeek - venue location: ", locationLat, locationLon);
+            // console.log("seatgeek - venue location: ", locationLat, locationLon);
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
@@ -192,12 +192,9 @@ function seatGeek(categoryFilter) {
     })
 }
 
-
-seatGeek();
-
 //to do
 //element.url --> view tickets
-//link view tickets button to seatgeek ticket url
+//link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
 //use a promise so that map loading does not interfere with api loading
 //if no events show up in a certain category, display an error page
 
@@ -232,7 +229,7 @@ seatGeek();
 //clear value from term search, but not location search
 //reset values on dropdown if utilized before search
 
-//store longlat of event as data attribute
+//store longlat of event as data attribute  // This is stored in the eventsArray as coords -Mark
 //use longlat for zomato api and map api
 
 //$("event div").on("click, function() {
