@@ -92,14 +92,14 @@ function seatGeek(seatGeekURL) {
             var tickets = element.url; // ticket URL
             var venue = element.venue.name;
             category = element.taxonomies[0].name;
-            var image;
+            var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
             
 
             // creates variables to store lat and lon of event location for restaurant api
-            // var locationLat = response.events[0].venue.location.lat;
-            // var locationLon = response.events[0].venue.location.lon;
+            var locationLat = response.events[0].venue.location.lat;
+            var locationLon = response.events[0].venue.location.lon;
             console.log(response) // our returned object
             
             // for passing to zomato api
@@ -107,14 +107,14 @@ function seatGeek(seatGeekURL) {
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-        //     var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+            var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
-        //     $.ajax({
-        //     url: restaurantURL,
-        //     method: "GET"
-        // }).then(function(response) {
-        //     console.log (response);
-        // })
+            $.ajax({
+            url: restaurantURL,
+            method: "GET"
+        }).then(function(response) {
+            console.log (response);
+        })
 
             
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
