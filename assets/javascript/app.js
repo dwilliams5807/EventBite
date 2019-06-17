@@ -42,13 +42,32 @@ if ("geolocation" in navigator) {
                         var category = element.taxonomies[0].name;
                         var image = element.performers[0].image;
 
+
+                      // creates variables to store lat and lon of event location for restaurant api
+                      var locationLat = response.events[0].venue.location.lat;
+                      var locationLon = response.events[0].venue.location.lon;
                         // console.log(response) // our returned object
                         // console.log("seatgeek - title: ", response.events[0].title)
-                        console.log(event, element)
+                        console.log(event, element);
                         // console.log("seatgeek - venue name: ", response.events[0].venue.name)
                         // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
                         // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
-                        // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
+                        
+                        // for passing to zomato api
+                        console.log("seatgeek - venue location: ", locationLat, locationLon);
+
+                       //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
+                       //within 8 mile radius and provides results in acending order sorted by distance
+                       var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+
+                       $.ajax({
+                        url: restaurantURL,
+                        method: "GET"
+                    }).then(function(response) {
+                        console.log (response);
+                    })
+
+                        
                         // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
                         // console.log("seatgeek - event date: ", response.events[0].datetime_local)
                         // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -117,14 +136,35 @@ if ("geolocation" in navigator) {
                         var venue = element.venue.name;
                         var category = element.taxonomies[0].name;
                         var image = element.performers[0].image;
+                        
+
+                        // creates variables to store lat and lon of event location for restaurant api
+                        var locationLat = response.events[0].venue.location.lat;
+                        var locationLon = response.events[0].venue.location.lon;
 
                         // console.log(response) // our returned object
                         // console.log("seatgeek - title: ", response.events[0].title)
-                        console.log(event, element)
+                        console.log(event, element);
                         // console.log("seatgeek - venue name: ", response.events[0].venue.name)
                         // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
                         // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
-                        // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
+
+                        // for passing to Zomato API
+                        console.log("seatgeek - venue location: ", locationLat, locationLon);
+
+                         //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
+                       //within 8 mile radius and provides results in acending order sorted by distance
+                       var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+
+                       $.ajax({
+                        url: restaurantURL,
+                        method: "GET"
+                    }).then(function(response) {
+                        console.log (response);
+                    })
+
+                        
+                        
                         // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
                         // console.log("seatgeek - event date: ", response.events[0].datetime_local)
                         // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -198,7 +238,61 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 
 seatGeek();
 
+//to do
+//element.url --> view tickets
+//link view tickets button to seatgeek ticket url
+//use a promise so that map loading does not interfere with api loading
+//if no events show up in a certain category, display an error page
+
+//create constructor for api calls
+//seatgeek api will be called about 6-7 times,
+//so we don't want to write the same code 6-7 times
+//1. geolocation
+//2. if user declines geolocation
+//3. when user chooses a category from dropdown**
+//4. when user filters by date from dropdown**
+//5. when user enters a search input
+//6. when displaying information on the modal
+//7. when user clicks on a featured location -- need to find the longlat for featured locations
+//dropdown will be pertaining to the featured location
+//maybe another ajax call when user makes a search and uses the dropdown
+
+//change the url depending on whether user picks:
+//category, then date
+//date, then category
+//category only
+//date only
+
+//search bar
+//if user agrees to use geolocation, reverse geocode into city, state
+//and pass that value into the location search
+//if user rejects, user can enter their own location manually
+//prevent page from refreshing
+//get value from search and pass as a parameter for url
+//user has to provide both a search term and location to submit
+//call ajax
+//maybe change the text from "upcoming events" to "upcoming events in <location>"
+//clear value from term search, but not location search
+
+//store longlat of event as data attribute
+//use longlat for zomato api and map api
+
+//$("event div").on("click, function() {
+//empty the modal content
+//get longlat from data attribute and pass on as a parameter for queryurl for zomato and map
+//get event name for wikipedia api
+//call zomato api, wikipedia api, map api
+//info needed from seatgeek: image, event title, location, date, time, ticket url
+//could possibly get this info from using "this" and getting it from the div
+//or we can make a separate ajax call
+//info needed from zomato: image, rating, restaurant name, location
+//info needed from wikipedia: description
+//info needed from mapbox: map
+//append info to html
+//})
+
 //mapbox
+//will place mapbox in it's own function and call it when the event is pressed on
 mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
 var map = new mapboxgl.Map({
     container: 'map',
@@ -244,8 +338,3 @@ $(".fa-chevron-left").on("click", function() {
     var position = $(".row").scrollLeft();
 	$(".row").animate({"scrollLeft": position - scrollWidth});
 })
-
-//to do
-//element.url --> view tickets
-//use a promise so that map loading does not interfere with api loading
-//give address with click on marker
