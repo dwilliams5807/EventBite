@@ -68,6 +68,8 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             break;
     }
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+
+    eventsArray = [];
     seatGeek(queryURL);
 })
 
@@ -117,8 +119,6 @@ function seatGeek(seatGeekURL) {
             } else {
                 image = element.performers[0].image;
             }
-
-            eventsArray = [];
 
             eventsArray.push({
                 event: event,
