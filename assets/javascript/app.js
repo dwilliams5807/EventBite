@@ -279,7 +279,78 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 
 seatGeek();
 
-//google maps testing
+//to do
+//element.url --> view tickets
+//link view tickets button to seatgeek ticket url
+//use a promise so that map loading does not interfere with api loading
+//if no events show up in a certain category, display an error page
+
+//create constructor for api calls
+//seatgeek api will be called about 6-7 times,
+//so we don't want to write the same code 6-7 times
+//1. geolocation
+//2. if user declines geolocation
+//3. when user chooses a category from dropdown**
+//4. when user filters by date from dropdown**
+//5. when user enters a search input
+//6. when displaying information on the modal
+//7. when user clicks on a featured location -- need to find the longlat for featured locations
+//dropdown will be pertaining to the featured location
+//maybe another ajax call when user makes a search and uses the dropdown
+
+//change the url depending on whether user picks:
+//category, then date
+//date, then category
+//category only
+//date only
+
+//search bar
+//if user agrees to use geolocation, reverse geocode into city, state
+//and pass that value into the location search
+//if user rejects, user can enter their own location manually
+//prevent page from refreshing
+//get value from search and pass as a parameter for url
+//user has to provide both a search term and location to submit
+//call ajax
+//maybe change the text from "upcoming events" to "upcoming events in <location>"
+//clear value from term search, but not location search
+//reset values on dropdown if utilized before search
+
+//store longlat of event as data attribute
+//use longlat for zomato api and map api
+
+//$("event div").on("click, function() {
+//empty the modal content
+//get longlat from data attribute and pass on as a parameter for queryurl for zomato and map
+//get event name for wikipedia api
+//call zomato api, wikipedia api, map api
+//info needed from seatgeek: image, event title, location, date, time, ticket url
+//could possibly get this info from using "this" and getting it from the div
+//or we can make a separate ajax call
+//info needed from zomato: image, rating, restaurant name, location
+//info needed from wikipedia: description
+//info needed from mapbox: map
+//append info to html
+//})
+
+//austin longlat
+//longitude = -97.7431;
+//latitude = 30.2672;
+
+//orlando longlat
+//longitude = 28.5383;
+//latitude = 81.3792;
+
+//nyc longlat
+//longitude = 40.7128;
+//latitude = 74.0060;
+
+//venice longlat
+//longitude = 45.4408;
+//latitude = 12.3155;
+
+//mapbox
+//will place mapbox in it's own function and call it when the event is pressed on
 mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
 var map = new mapboxgl.Map({
     container: 'map',
@@ -293,9 +364,12 @@ var marker = new mapboxgl.Marker()
 .setLngLat([-97.7431, 30.2672])
 .addTo(map);
 
+map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl());
+
 $('#exampleModal').on('shown.bs.modal', function() {
     map.resize();
-  });
+});
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
@@ -325,5 +399,3 @@ $(".fa-chevron-left").on("click", function() {
     var position = $(".row").scrollLeft();
 	$(".row").animate({"scrollLeft": position - scrollWidth});
 })
-
-//element.url --> view tickets
