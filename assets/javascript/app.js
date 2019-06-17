@@ -309,7 +309,7 @@ $(".card-container").on("click", ".card", function() {
     var performerTitle = $(this).children(".card-body").children(".card-title").text();
     var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
     // Wikipedia API
-    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
+    var wikiURL = "https://www.mediawiki.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
 
     $.ajax({
         url: wikiURL,
