@@ -6,13 +6,15 @@ var categoryFilter;
 var eventsArray = [];
 var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
+var resLat;
+var resLon;
 
 if ("geolocation" in navigator) {
     // check if geolocation is supported/enabled on current browser
     navigator.geolocation.getCurrentPosition(
         function success(position) {
             console.log('user coordinates: ', position)
-            // for when getting location is a success
+                // for when getting location is a success
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
             // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
@@ -29,7 +31,7 @@ if ("geolocation" in navigator) {
             // use default location (Austin, TX)
             latitude = 30.2672;
             longitude = -97.7431;
-            
+
             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
             seatGeek(queryURL);
         }
@@ -46,24 +48,25 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
     // console.log($(this).text())/
     categoryFilter = $(this).text();
     switch (categoryFilter) {
-        case "Sports": 
+        case "Sports":
             categoryFilter = "sports";
             break;
-        case "Concerts": 
+        case "Concerts":
             categoryFilter = "concert";
             break;
-        case "Broadway Shows": 
+        case "Broadway Shows":
             categoryFilter = "broadway_tickets_national";
             break;
-        case "Comedy": 
+        case "Comedy":
             categoryFilter = "comedy";
             break;
-        case "Music Festivals": 
+        case "Music Festivals":
             categoryFilter = "festival";
             break;
-        default: ""
+        default:
+            ""
             break;
-    }    
+    }
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
     seatGeek(queryURL);
 })
@@ -96,18 +99,6 @@ function seatGeek(seatGeekURL) {
             var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
-            
-
-            // creates variables to store lat and lon of event location for restaurant api
-            // var locationLat = response.events[0].venue.location.lat;
-            // var locationLon = response.events[0].venue.location.lon;
-            // console.log(response) // our returned object
-            
-            // for passing to zomato api
-            // console.log("seatgeek - venue location: ", locationLat, locationLon);
-
-            //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
-            //within 8 mile radius and provides results in acending order sorted by distance
 
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
@@ -125,7 +116,7 @@ function seatGeek(seatGeekURL) {
             } else {
                 image = element.performers[0].image;
             }
-            
+
 
             eventsArray.push({
                 event: event,
@@ -138,12 +129,11 @@ function seatGeek(seatGeekURL) {
                 image: image
             });
 
-            
 
             // var element = response.events[i];
-            
 
-            
+
+
             // console.log("seatgeek - title: ", response.events[0].title)
             // console.log(event, element)
             // console.log("seatgeek - venue name: ", response.events[0].venue.name)
@@ -155,22 +145,54 @@ function seatGeek(seatGeekURL) {
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
             // console.log("seatgeek - event state: ", response.events[0].venue.state)
             // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-            
+
             $('.card-container').append(
-                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' + 
-                    '<p class="category"><span>' + category + '</span></p>' + 
-                    '<img src="' + image + '" class="card-img-top">' + 
-                    '<div class="card-body">' + 
-                        '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' + 
-                        '<h5 class="card-title">' + event + '</h5>' + 
-                        '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' + 
-                    '</div>' + 
+                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
+                '<p class="category"><span>' + category + '</span></p>' +
+                '<img src="' + image + '" class="card-img-top">' +
+                '<div class="card-body">' +
+                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
+                '<h5 class="card-title">' + event + '</h5>' +
+                '<div class="location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '</div>' +
                 '</div>'
             );
-        }   
+        }
         console.log("eventsArray", eventsArray);
     })
 }
+
+
+// Wikipedia API
+var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=";
+
+$.ajax({
+    url: wikiURL,
+    method: "GET"
+}).done(function(response) {
+
+});
+
+$(".city-container").on("click", function() {
+    var destination = $(this).children(".travel-destination").children("h4").text();
+    if (destination === "Austin, TX") {
+        longitude = -97.7431;
+        latitude = 30.2672;
+    } else if (destination === "Orlando, FL") {
+        longitude = 28.5383;
+        latitude = 81.3792;
+    } else if (destination === "New York City, NY") {
+        longitude = 40.7128;
+        latitude = 74.0060;
+    } else if (destination === "Venice, ITL") {
+        longitude = 45.4408;
+        latitude = 12.3155;
+    }
+})
+
+// function featuredLocation() {
+
+// }
 
 //to do
 //element.url --> view tickets
@@ -226,43 +248,41 @@ function seatGeek(seatGeekURL) {
 //append info to html
 //})
 
-//austin longlat
-//longitude = -97.7431;
-//latitude = 30.2672;
-
-//orlando longlat
-//longitude = 28.5383;
-//latitude = 81.3792;
-
-//nyc longlat
-//longitude = 40.7128;
-//latitude = 74.0060;
-
-//venice longlat
-//longitude = 45.4408;
-//latitude = 12.3155;
+//if zomato image does not show,
+//have a placeholder image
 
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
-// mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
-// var map = new mapboxgl.Map({
-//     container: 'map',
-//     style: 'mapbox://styles/mapbox/streets-v11',
-//     //position is longitude, latitude
-//     center: [-97.7431, 30.2672],
-//     zoom: 13
-// });
+function mapBox() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        //position is longitude, latitude
+        center: [resLon, resLat],
+        zoom: 13
+    });
 
-// var marker = new mapboxgl.Marker()
-// .setLngLat([-97.7431, 30.2672])
-// .addTo(map);
+    var marker = new mapboxgl.Marker()
+    .setLngLat([resLon, resLat])
+    .addTo(map);
 
-// map.addControl(new mapboxgl.FullscreenControl());
-// map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.FullscreenControl());
+    map.addControl(new mapboxgl.NavigationControl());
+    map.resize();
+}
 
-// $('#exampleModal').on('shown.bs.modal', function() {
-//     map.resize();
-// });
+$(".card-container").on("click", ".card", function() {
+    // console.log("this: ", $(this));
+    var index = $(this).attr('data-index');
+    var e = eventsArray[index];
+    // console.log(index);
+    $('.modal-header > img').attr('src', e.image);
+    $('.event-title').text(e.event);
+    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
+    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
+    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+})
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
@@ -284,7 +304,7 @@ function toggle(toggleItem, menu) {
 $(".fa-chevron-right").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
-	$(".row").animate({"scrollLeft": position + scrollWidth});
+    $(".row").animate({ "scrollLeft": position + scrollWidth });
 })
 
 $(".fa-chevron-left").on("click", function() {
@@ -294,28 +314,28 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
-    var resLat = $(this).attr("data-lat");
+
+var resLat = $(this).attr("data-lat");
 var resLon = $(this).attr("data-lon");
 var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
-$.ajax({
-url: restaurantURL,
-method: "GET"
-}).then(function(response) {
-console.log (response);
-$('.row').html("");
-for (var i = 0; i < response.restaurants.length; i++) {
-var resElement = response.restaurants[i].restaurant;
-var resName = resElement.name;
-var resRating = resElement.user_rating.aggregate_rating;
-var resImage = resElement.photos[0].photo.url;
-var resAddress = resElement.location.address;
+    $.ajax({
+        url: restaurantURL,
+        method: "GET"
+        }).then(function(response) {
+        console.log (response);
+        $('.row').html("");
+        for (var i = 0; i < response.restaurants.length; i++) {
+        var resElement = response.restaurants[i].restaurant;
+        var resName = resElement.name;
+        var resRating = resElement.user_rating.aggregate_rating;
+        var resImage = resElement.photos[0].photo.url;
+        var resAddress = resElement.location.address;
 
-
-
-$(".row").append("<div class='col-5'> <img src='"
-+ resImage + "'> <div class='star-rating'>"
-+ resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
-}}
-)
+        $(".row").append("<div class='col-5'> <img src='"
+        + resImage + "'> <div class='star-rating'>"
+        + resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+        }
+    })
+    mapBox();
 })
