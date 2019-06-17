@@ -198,7 +198,7 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 
 seatGeek();
 
-//google maps testing
+//mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
 var map = new mapboxgl.Map({
     container: 'map',
@@ -214,7 +214,7 @@ var marker = new mapboxgl.Marker()
 
 $('#exampleModal').on('shown.bs.modal', function() {
     map.resize();
-  });
+});
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
@@ -245,4 +245,7 @@ $(".fa-chevron-left").on("click", function() {
 	$(".row").animate({"scrollLeft": position - scrollWidth});
 })
 
+//to do
 //element.url --> view tickets
+//use a promise so that map loading does not interfere with api loading
+//give address with click on marker
