@@ -296,7 +296,7 @@ $(".fa-chevron-left").on("click", function() {
 $(".card-container").on("click", ".card", function() {
     var resLat = $(this).attr("data-lat");
 var resLon = $(this).attr("data-lon");
-var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
 $.ajax({
 url: restaurantURL,
