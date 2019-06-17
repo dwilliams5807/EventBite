@@ -93,7 +93,7 @@ function seatGeek(seatGeekURL) {
             var tickets = element.url; // ticket URL
             var venue = element.venue.name;
             category = element.taxonomies[0].name;
-            var image;
+            var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
             
