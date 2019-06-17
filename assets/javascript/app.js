@@ -100,6 +100,10 @@ function seatGeek(seatGeekURL) {
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9cab600eb93e95c57dc5efc11825ad3b629dfab8
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -161,17 +165,6 @@ function seatGeek(seatGeekURL) {
         console.log("eventsArray", eventsArray);
     })
 }
-
-
-// Wikipedia API
-var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=";
-
-$.ajax({
-    url: wikiURL,
-    method: "GET"
-}).done(function(response) {
-
-});
 
 $(".city-container").on("click", function() {
     var destination = $(this).children(".travel-destination").children("h4").text();
@@ -314,10 +307,26 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
+<<<<<<< HEAD
 
 var resLat = $(this).attr("data-lat");
 var resLon = $(this).attr("data-lon");
 var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+=======
+    resLat = $(this).attr("data-lat");
+    resLon = $(this).attr("data-lon");
+    var performerTitle = $(this).children(".card-body").children(".card-title").text();
+    var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+    // Wikipedia API
+    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
+
+    $.ajax({
+        url: wikiURL,
+        method: "GET"
+    }).done(function(response) {
+        console.log(response);
+    });
+>>>>>>> 9cab600eb93e95c57dc5efc11825ad3b629dfab8
 
     $.ajax({
         url: restaurantURL,
