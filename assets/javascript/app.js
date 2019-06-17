@@ -292,6 +292,7 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
+
     //seatgeek api
     var index = $(this).attr('data-index');
     var e = eventsArray[index];
