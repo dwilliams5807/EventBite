@@ -273,6 +273,18 @@ function mapBox() {
     map.resize();
 }
 
+$(".card-container").on("click", ".card", function() {
+    // console.log("this: ", $(this));
+    var index = $(this).attr('data-index');
+    var e = eventsArray[index];
+    // console.log(index);
+    $('.modal-header > img').attr('src', e.image);
+    $('.event-title').text(e.event);
+    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
+    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
+    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+})
+
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
 })
