@@ -264,8 +264,8 @@ function mapBox() {
     });
 
     var marker = new mapboxgl.Marker()
-    .setLngLat([resLon, resLat])
-    .addTo(map);
+        .setLngLat([resLon, resLat])
+        .addTo(map);
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
@@ -310,7 +310,7 @@ $(".fa-chevron-right").on("click", function() {
 $(".fa-chevron-left").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
-	$(".row").animate({"scrollLeft": position - scrollWidth});
+    $(".row").animate({ "scrollLeft": position - scrollWidth });
 })
 
 $(".card-container").on("click", ".card", function() {
@@ -322,19 +322,19 @@ var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=
     $.ajax({
         url: restaurantURL,
         method: "GET"
-        }).then(function(response) {
-        console.log (response);
+    }).then(function(response) {
+        console.log(response);
         $('.row').html("");
         for (var i = 0; i < response.restaurants.length; i++) {
-        var resElement = response.restaurants[i].restaurant;
-        var resName = resElement.name;
-        var resRating = resElement.user_rating.aggregate_rating;
-        var resImage = resElement.photos[0].photo.url;
-        var resAddress = resElement.location.address;
+            var resElement = response.restaurants[i].restaurant;
+            var resName = resElement.name;
+            var resRating = resElement.user_rating.aggregate_rating;
+            var resImage = resElement.photos[0].photo.url;
+            var resAddress = resElement.location.address;
 
-        $(".row").append("<div class='col-5'> <img src='"
-        + resImage + "'> <div class='star-rating'>"
-        + resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+            $(".row").append("<div class='col-5'> <img src='" +
+                resImage + "'> <div class='star-rating'>" +
+                resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
     mapBox();
