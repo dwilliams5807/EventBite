@@ -6,6 +6,8 @@ var categoryFilter;
 var eventsArray = [];
 var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
+var resLat;
+var resLon;
 
 if ("geolocation" in navigator) {
     // check if geolocation is supported/enabled on current browser
@@ -191,6 +193,26 @@ $.ajax({
 
 });
 
+$(".city-container").on("click", function() {
+    var destination = $(this).children(".travel-destination").children("h4").text();
+    if (destination === "Austin, TX") {
+        longitude = -97.7431;
+        latitude = 30.2672;
+    } else if (destination === "Orlando, FL") {
+        longitude = 28.5383;
+        latitude = 81.3792;
+    } else if (destination === "New York City, NY") {
+        longitude = 40.7128;
+        latitude = 74.0060;
+    } else if (destination === "Venice, ITL") {
+        longitude = 45.4408;
+        latitude = 12.3155;
+    }
+})
+
+// function featuredLocation() {
+
+// }
 
 //to do
 //element.url --> view tickets
@@ -246,43 +268,29 @@ $.ajax({
 //append info to html
 //})
 
-//austin longlat
-//longitude = -97.7431;
-//latitude = 30.2672;
-
-//orlando longlat
-//longitude = 28.5383;
-//latitude = 81.3792;
-
-//nyc longlat
-//longitude = 40.7128;
-//latitude = 74.0060;
-
-//venice longlat
-//longitude = 45.4408;
-//latitude = 12.3155;
+//if zomato image does not show,
+//have a placeholder image
 
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
-// mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
-// var map = new mapboxgl.Map({
-//     container: 'map',
-//     style: 'mapbox://styles/mapbox/streets-v11',
-//     //position is longitude, latitude
-//     center: [-97.7431, 30.2672],
-//     zoom: 13
-// });
+function mapBox() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        //position is longitude, latitude
+        center: [resLon, resLat],
+        zoom: 13
+    });
 
-// var marker = new mapboxgl.Marker()
-// .setLngLat([-97.7431, 30.2672])
-// .addTo(map);
+    var marker = new mapboxgl.Marker()
+    .setLngLat([resLon, resLat])
+    .addTo(map);
 
-// map.addControl(new mapboxgl.FullscreenControl());
-// map.addControl(new mapboxgl.NavigationControl());
-
-// $('#exampleModal').on('shown.bs.modal', function() {
-//     map.resize();
-// });
+    map.addControl(new mapboxgl.FullscreenControl());
+    map.addControl(new mapboxgl.NavigationControl());
+    map.resize();
+}
 
 $(".card-container").on("click", ".card", function() {
     // console.log("this: ", $(this));
@@ -322,5 +330,31 @@ $(".fa-chevron-right").on("click", function() {
 $(".fa-chevron-left").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
-    $(".row").animate({ "scrollLeft": position - scrollWidth });
+	$(".row").animate({"scrollLeft": position - scrollWidth});
+})
+
+$(".card-container").on("click", ".card", function() {
+    resLat = $(this).attr("data-lat");
+    resLon = $(this).attr("data-lon");
+    var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+
+    $.ajax({
+        url: restaurantURL,
+        method: "GET"
+        }).then(function(response) {
+        console.log (response);
+        $('.row').html("");
+        for (var i = 0; i < response.restaurants.length; i++) {
+        var resElement = response.restaurants[i].restaurant;
+        var resName = resElement.name;
+        var resRating = resElement.user_rating.aggregate_rating;
+        var resImage = resElement.photos[0].photo.url;
+        var resAddress = resElement.location.address;
+
+        $(".row").append("<div class='col-5'> <img src='"
+        + resImage + "'> <div class='star-rating'>"
+        + resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+        }
+    })
+    mapBox();
 })
