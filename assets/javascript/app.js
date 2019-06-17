@@ -108,16 +108,7 @@ function seatGeek(seatGeekURL) {
 
             //creates a variable fot the url for the zomato api call. pulls lat, lon of event and searches 
             //within 8 mile radius and provides results in acending order sorted by distance
-        //     var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + locationLat + "&lon=" + locationLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
 
-        //     $.ajax({
-        //     url: restaurantURL,
-        //     method: "GET"
-        // }).then(function(response) {
-        //     console.log (response);
-        // })
-
-            
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
             // console.log("seatgeek - event city: ", response.events[0].venue.city)
@@ -268,21 +259,10 @@ function seatGeek(seatGeekURL) {
 
 // map.addControl(new mapboxgl.FullscreenControl());
 // map.addControl(new mapboxgl.NavigationControl());
-$(".card-container").on("click", ".card", function() {
-    // console.log("this: ", $(this));
-    var index = $(this).attr('data-index');
-    var e = eventsArray[index];
-    // console.log(index);
-    $('.modal-header > img').attr('src', e.image);
-    $('.event-title').text(e.event);
-    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
-    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
-    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
-})
 
-$('#exampleModal').on('shown.bs.modal', function() {
-    map.resize();
-});
+// $('#exampleModal').on('shown.bs.modal', function() {
+//     map.resize();
+// });
 
 $(".date-menu a").on("click", function() {
     toggle(".date-toggle:first-child", this);
@@ -311,4 +291,31 @@ $(".fa-chevron-left").on("click", function() {
     var scrollWidth = $(".row").width() + 55;
     var position = $(".row").scrollLeft();
 	$(".row").animate({"scrollLeft": position - scrollWidth});
+})
+
+$(".card-container").on("click", ".card", function() {
+    var resLat = $(this).attr("data-lat");
+var resLon = $(this).attr("data-lon");
+var restaurantURL = "https://developers.zomato.com/api/v2.1/search?count=10&lat=" + resLat + "&lon=" + resLon + "&radius=12874&sort=real_distance&order=asc&apikey=aac31fc7cf28e8d834b11bc72cbcc148";
+
+$.ajax({
+url: restaurantURL,
+method: "GET"
+}).then(function(response) {
+console.log (response);
+$('.row').html("");
+for (var i = 0; i < response.restaurants.length; i++) {
+var resElement = response.restaurants[i].restaurant;
+var resName = resElement.name;
+var resRating = resElement.user_rating.aggregate_rating;
+var resImage = resElement.photos[0].photo.url;
+var resAddress = resElement.location.address;
+
+
+
+$(".row").append("<div class='col-5'> <img src='"
++ resImage + "'> <div class='star-rating'>"
++ resRating + "</div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+}}
+)
 })
