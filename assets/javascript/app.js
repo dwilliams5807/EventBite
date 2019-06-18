@@ -9,38 +9,38 @@ var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
 var resLat;
 var resLon;
 
-if ("geolocation" in navigator) {
-    // check if geolocation is supported/enabled on current browser
-    navigator.geolocation.getCurrentPosition(
-        function success(position) {
-            console.log('user coordinates: ', position)
-                // for when getting location is a success
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
-            // if it's the first search and there are no filter terms, set filter to empty string
-            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-            seatGeek(queryURL);
-            // }
-        },
-        function error(error_message) {
-            // for when getting location results in an error
-            console.error('An error has occured while retrieving location', error_message)
-            console.log('No location data available. Using default location (Austin, TX).');
+// if ("geolocation" in navigator) {
+//     // check if geolocation is supported/enabled on current browser
+//     navigator.geolocation.getCurrentPosition(
+//         function success(position) {
+//             console.log('user coordinates: ', position)
+//                 // for when getting location is a success
+//             latitude = position.coords.latitude;
+//             longitude = position.coords.longitude;
+//             // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+//             // if it's the first search and there are no filter terms, set filter to empty string
+//             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+//             seatGeek(queryURL);
+//             // }
+//         },
+//         function error(error_message) {
+//             // for when getting location results in an error
+//             console.error('An error has occured while retrieving location', error_message)
+//             console.log('No location data available. Using default location (Austin, TX).');
 
-            // use default location (Austin, TX)
-            latitude = 30.2672;
-            longitude = -97.7431;
+//             // use default location (Austin, TX)
+//             latitude = 30.2672;
+//             longitude = -97.7431;
 
-            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-            seatGeek(queryURL);
-        }
-    )
-} else {
-    // geolocation is not supported
-    // get your location some other way
-    console.log('geolocation is not enabled on this browser')
-}
+//             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+//             seatGeek(queryURL);
+//         }
+//     )
+// } else {
+//     // geolocation is not supported
+//     // get your location some other way
+//     console.log('geolocation is not enabled on this browser')
+// }
 
 //need to rename because both dropdowns are called dropdown
 $('.dropdown').on('click', '.dropdown-item', function(event) {
@@ -179,8 +179,8 @@ function seatGeek(seatGeekURL) {
 $(".city-container").on("click", function() {
     var destination = $(this).children(".travel-destination").children("h4").text();
     if (destination === "Austin, TX") {
-        longitude = -97.7431;
-        latitude = 30.2672;
+        longitude = -97.7539;
+        latitude = 30.3076;
     } else if (destination === "Orlando, FL") {
         longitude = -81.3792;
         latitude = 28.5383;
@@ -247,8 +247,26 @@ $(".city-container").on("click", function() {
 //1. click on a new featured location
 //2. when searching
 
-//mapbox
-//will place mapbox in it's own function and call it when the event is pressed on
+function getCityState() {
+    $.ajax({
+        url: "https://get.geojs.io/v1/ip/geo.json",
+        method: "GET"
+    }).done(function(response) {
+        // console.log(response)
+        latitude = response.latitude;
+        console.log('latitude: ', response.latitude);
+        longitude = response.longitude;
+        console.log('longitude: ', response.longitude);
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+
+        // console.log(response.city + ', ' + response.region);
+
+        //$('.location-input').attr('placeholder', response.city + ', ' + response.region);
+        $('.location-input').val(response.city + ', ' + response.region);
+        seatGeek(queryURL);
+    })
+}
+
 function mapBox() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
     var map = new mapboxgl.Map({
@@ -366,3 +384,5 @@ $(".card-container").on("click", ".card", function() {
     })
     mapBox();
 });
+
+getCityState();
