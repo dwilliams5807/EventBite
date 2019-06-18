@@ -12,7 +12,6 @@ var resLon;
 var cityQuery;
 var currentCity;
 var searchInput;
-var tickets;
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -100,18 +99,16 @@ $('#categoryDropdown').on('click', '.dropdown-item', function(event) {
             ""
             break;
     }
+    eventsArray = [];
     if (dateFilter !== "") {
         queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
     } else {
         queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
     }
-    eventsArray = [];
     seatGeek(queryURL);
 })
 
-
 //    if user refuses, they can use search bar
-
 //  search bar
 //    accept city name / zip code
 $("form").on("submit", function(event) {
@@ -139,7 +136,7 @@ function seatGeek(seatGeekURL) {
     $.ajax({
         url: seatGeekURL,
         method: "GET"
-    }).then(function(response) {
+    }).done(function(response) {
         $('.card-container').html("");
         for (var i = 0; i < response.events.length; i++) {
             var element = response.events[i];
@@ -150,11 +147,12 @@ function seatGeek(seatGeekURL) {
             var coords = element.venue.location;
             var tickets = element.url; // ticket URL
             var venue = element.venue.name;
+            var address = element.venue.address;
             category = element.taxonomies[0].name;
             var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
-            console.log(response)
+
 
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
@@ -173,8 +171,6 @@ function seatGeek(seatGeekURL) {
                 image = element.performers[0].image;
             }
 
-            // eventsArray = [];
-
             eventsArray.push({
                 event: event,
                 date: date,
@@ -182,6 +178,8 @@ function seatGeek(seatGeekURL) {
                 state: state,
                 coords: coords,
                 venue: venue,
+                address: address,
+                tickets: tickets,
                 category: category,
                 image: image
             });
@@ -205,13 +203,13 @@ function seatGeek(seatGeekURL) {
 
             $('.card-container').append(
                 '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
-                    '<p class="category"><span>' + category + '</span></p>' +
-                    '<img src="' + image + '" class="card-img-top">' +
-                    '<div class="card-body">' +
-                        '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
-                        '<h5 class="card-title">' + event + '</h5>' +
-                        '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
-                    '</div>' +
+                '<p class="category"><span>' + category + '</span></p>' +
+                '<img src="' + image + '" class="card-img-top">' +
+                '<div class="card-body">' +
+                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
+                '<h5 class="card-title">' + event + '</h5>' +
+                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                '</div>' +
                 '</div>'
             );
         }
@@ -220,21 +218,20 @@ function seatGeek(seatGeekURL) {
 }
 
 $(".city-container").on("click", function() {
-    var destination = $(this).children(".travel-destination").children("h4").text();
-    if (destination === "Austin, TX") {
-        longitude = -97.7431;
-        latitude = 30.2672;
-    } else if (destination === "Orlando, FL") {
+    var destination = $(this).children(".travel-destination").children("h4").children("span").text();
+    if (destination === "Austin") {
+        longitude = -97.7539;
+        latitude = 30.3076;
+    } else if (destination === "Orlando") {
         longitude = -81.3792;
         latitude = 28.5383;
-    } else if (destination === "New York City, NY") {
+    } else if (destination === "New York City") {
         longitude = -74.0060;
         latitude = 40.7128;
-    } else if (destination === "Los Angeles, CA") {
+    } else if (destination === "Los Angeles") {
         longitude = -119.4179;
         latitude = 36.7783;
     }
-
     $(".upcoming-listing").text("Upcoming Events in " + destination);
     dropdownReset();
     eventsArray = [];
@@ -242,23 +239,25 @@ $(".city-container").on("click", function() {
     categoryFilter = "";
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
 })
 
 //to do
 //element.url --> view tickets
 //link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
-//use a promise so that map loading does not interfere with api loading
 //if no events show up in a certain category, display an error page
 
 //create constructor for api calls
 //seatgeek api will be called about 6-7 times,
 //so we don't want to write the same code 6-7 times
-//1. geolocation
-//2. if user declines geolocation
-//3. when user chooses a category from dropdown**
+//1. geolocation - done
+//2. if user declines geolocation - done
+//3. when user chooses a category from dropdown** - done
 //4. when user filters by date from dropdown**
 //5. when user enters a search input
-//6. when displaying information on the modal
+//6. when displaying information on the modal - done
 //7. when user clicks on a featured location -- need to find the longlat for featured locations
 //dropdown will be pertaining to the featured location
 //maybe another ajax call when user makes a search and uses the dropdown
@@ -281,14 +280,72 @@ $(".city-container").on("click", function() {
 //clear value from term search, but not location search
 //reset values on dropdown if utilized before search
 
+//location bar
+
 //$("event div").on("click, function() {
 //get event name for wikipedia api
 //info needed from wikipedia: description
 //})
 
+//is it possible to pass the whole address of the event for the modal instead of
+//just the location, city, and state?
 
-//mapbox
-//will place mapbox in it's own function and call it when the event is pressed on
+//clear dropdown when
+//1. click on a new featured location
+//2. when searching
+
+//autocomplete for location search?
+
+
+
+// uses the user's IP address to produce a city and state for
+// inputting next to the search bar and above the event cards
+function getCityState() {
+    $.ajax({
+        url: "https://get.geojs.io/v1/ip/geo.json",
+        method: "GET"
+    }).done(function(response) {
+        // console.log(response)
+        latitude = response.latitude;
+        console.log('getCityState latitude: ', response.latitude);
+        longitude = response.longitude;
+        console.log('getCityState longitude: ', response.longitude);
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+
+        $(".upcoming-listing").text("Upcoming Events in " + response.city);
+        $('.location-input').val(response.city + ', ' + response.region);
+        seatGeek(queryURL);
+    })
+}
+
+// function to take the city search query and produce a latitude and longitude value
+// currently it doesn't update the location to the right of the search bar or the "upcoming events in..." section
+// we'll have to modify getCityState() or find another way to convert coords to a city/state
+function getLatLong(cityQuery) {
+    var citySearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURI(cityQuery) + ".json?access_token=pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA"
+    $.ajax({
+        url: citySearch,
+        method: "GET"
+    }).done(function(response) {
+        // console.log("getLatLong: ", response)
+        latitude = response.features[0].center[1];
+        // console.log('getLatLong latitude: ', response.features[0].center[1]);
+        longitude = response.features[0].center[0];
+        // console.log('getLatLong longitude: ', response.features[0].center[0]);
+        currentCity = response.features[0].text;
+        var fullLocation = response.features[0].place_name;
+        //would like to pass the city only
+        $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+        $('.location-input').val(fullLocation);
+        if (searchInput !== "") {
+            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        } else {
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        }
+        seatGeek(queryURL);
+    })
+}
+
 function mapBox() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
     var map = new mapboxgl.Map({
@@ -299,13 +356,14 @@ function mapBox() {
         zoom: 13
     });
 
-    var marker = new mapboxgl.Marker()
-        .setLngLat([resLon, resLat])
-        .addTo(map);
+    new mapboxgl.Marker().setLngLat([resLon, resLat]).addTo(map);
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
-    map.resize();
+
+    map.on('load', function() {
+        map.resize();
+    });
 }
 
 $(".date-menu a").on("click", function() {
@@ -344,9 +402,7 @@ $(".fa-chevron-left").on("click", function() {
     $(".row").animate({ "scrollLeft": position - scrollWidth });
 })
 
-// modal
 $(".card-container").on("click", ".card", function() {
-
     //seatgeek api
     var index = $(this).attr('data-index');
     var e = eventsArray[index];
@@ -354,7 +410,25 @@ $(".card-container").on("click", ".card", function() {
     $('.event-title').text(e.event);
     $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
     $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
-     
+    $('.tickets').attr({
+        'href': e.tickets,
+        'target': "_blank"
+    });
+        
+    // Wikipedia API
+    var performerTitle = $(this).children(".card-body").children(".card-title").text();
+    console.log(performerTitle);
+    var wikiURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=extracts&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=" + performerTitle + "&gsrinfo=totalhits&format=json&callback=?";
+
+    $.ajax({
+        url: wikiURL,
+        method: "GET",
+        jsonp: "callback",
+        dataType: 'jsonp'   
+    }).done(function(response) {
+        console.log(response);
+    });
+
     //zomato api
     resLat = $(this).attr("data-lat");
     resLon = $(this).attr("data-lon");
@@ -379,32 +453,9 @@ $(".card-container").on("click", ".card", function() {
                 resImage = "assets/images/restaurant.jpg";
             }
             
-            // if (resRating === 0) {
-            //     resRating = "No Rating";
-            // }
-              if (resRating >= 0 && resRating < 0.3) {
-                resRating = "<div class='noRating'> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> </div>"
-            }  else if (resRating >= 0.3 && resRating < 0.8) {
-                resRating = "<i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            }  else if (resRating >= 0.8 && resRating < 1.3) {
-                resRating = "<i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            }  else if (resRating >= 1.3 && resRating < 1.8) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 1.8 && resRating < 2.3) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 2.3 && resRating < 2.8) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 2.8 && resRating < 3.3) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 3.3 && resRating < 3.8) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 3.8 && resRating < 4.3) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i>"
-            } else if (resRating >= 4.3 && resRating < 4.8) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i>"
-            } else if (resRating >= 4.8 && resRating <= 5) {
-                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>"
-            } 
+            if (resRating === 0) {
+                resRating = "No Rating";
+            }
 
             if (resPrice === 1) {
                 resPrice = "$";
@@ -421,5 +472,8 @@ $(".card-container").on("click", ".card", function() {
                 + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
+    $(".row").animate({ "scrollLeft": 0});
     mapBox();
 });
+
+getCityState();
