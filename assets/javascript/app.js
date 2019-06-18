@@ -119,7 +119,7 @@ function seatGeek(seatGeekURL) {
             var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
             // because I was getting the same error with the images
-
+            console.log(response)
 
             // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
             // console.log("seatgeek - event date: ", response.events[0].datetime_local)
@@ -170,13 +170,13 @@ function seatGeek(seatGeekURL) {
 
             $('.card-container').append(
                 '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
-                '<p class="category"><span>' + category + '</span></p>' +
-                '<img src="' + image + '" class="card-img-top">' +
-                '<div class="card-body">' +
-                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
-                '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
-                '</div>' +
+                    '<p class="category"><span>' + category + '</span></p>' +
+                    '<img src="' + image + '" class="card-img-top">' +
+                    '<div class="card-body">' +
+                        '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
+                        '<h5 class="card-title">' + event + '</h5>' +
+                        '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                    '</div>' +
                 '</div>'
             );
         }
@@ -371,17 +371,6 @@ $(".card-container").on("click", ".card", function() {
     $('.location').html(e.address + '<br />' + e.city + ', ' + e.state);
     $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
     $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
-        
-    // Wikipedia API
-    var performerTitle = $(this).children(".card-body").children(".card-title").text();
-    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
-
-    $.ajax({
-        url: wikiURL,
-        method: "GET"
-    }).done(function(response) {
-        // console.log(response);
-    });
 
     //zomato api
     resLat = $(this).attr("data-lat");
