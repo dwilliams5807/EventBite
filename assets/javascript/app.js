@@ -2,7 +2,8 @@
 var postalCode;
 var latitude;
 var longitude;
-var categoryFilter;
+var dateFilter;
+var categoryFilter = "";
 var eventsArray = [];
 var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
@@ -45,8 +46,36 @@ var searchInput;
 //     console.log('geolocation is not enabled on this browser')
 // }
 
+$('#dateDropdown').on('click', '.dropdown-item', function(event) {
+    event.preventDefault();
+    dateFilter = $(this).text();
+    switch (dateFilter) {
+        case "Today":
+            dateFilter = moment().utc().format("YYYY-MM-DD");
+            break;
+        case "Tomorrow":
+            dateFilter = moment().add(1, "days").utc().format("YYYY-MM-DD");
+            break;
+        case "Weekend":
+            dateFilter = moment().day(6).utc().format("YYYY-MM-DD") + "&datetime_utc=" + moment().day(7).format("YYYY-MM-DD");
+            break;
+        default:
+            ""
+            break;
+    }
+    console.log(dateFilter);
+    eventsArray = [];
+    if (categoryFilter !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+    } else {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&datetime_utc=" + dateFilter;
+    }
+    seatGeek(queryURL);
+})
+
+
 //need to rename because both dropdowns are called dropdown
-$('.dropdown').on('click', '.dropdown-item', function(event) {
+$('#categoryDropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
     categoryFilter = $(this).text();
@@ -71,7 +100,11 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             break;
     }
     eventsArray = [];
-    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    if (dateFilter !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+    } else {
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    }
     seatGeek(queryURL);
 })
 
@@ -85,6 +118,8 @@ $("form").on("submit", function(event) {
     //do we want to allow zipcode also?
     getLatLong(cityQuery);
     $(".search-input").val("");
+    dateFilter = "";
+    categoryFilter = "";
     dropdownReset();
     // //would like to pass the city only
     // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
@@ -200,6 +235,8 @@ $(".city-container").on("click", function() {
     $(".upcoming-listing").text("Upcoming Events in " + destination);
     dropdownReset();
     eventsArray = [];
+    dateFilter = "";
+    categoryFilter = "";
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
     $('html, body').animate({
@@ -340,6 +377,8 @@ $(".category-menu a").on("click", function() {
 function dropdownReset() {
     $(".category-toggle:first-child").text("Any Category");
     $(".category-toggle:first-child").removeAttr("style");
+    $(".date-toggle:first-child").text("Any Date");
+    $(".date-toggle:first-child").removeAttr("style");
 }
 
 function toggle(toggleItem, menu) {
@@ -374,13 +413,16 @@ $(".card-container").on("click", ".card", function() {
         
     // Wikipedia API
     var performerTitle = $(this).children(".card-body").children(".card-title").text();
-    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
+    console.log(performerTitle);
+    var wikiURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=extracts&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=" + performerTitle + "&gsrinfo=totalhits&format=json&callback=?";
 
     $.ajax({
         url: wikiURL,
-        method: "GET"
+        method: "GET",
+        jsonp: "callback",
+        dataType: 'jsonp'   
     }).done(function(response) {
-        // console.log(response);
+        console.log(response);
     });
 
     //zomato api
