@@ -10,6 +10,7 @@ var resLat;
 var resLon;
 var cityQuery;
 var currentCity;
+var searchInput;
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -79,13 +80,10 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 //    accept city name / zip code
 $("form").on("submit", function(event) {
     event.preventDefault();
-    var searchInput = $(".search-input").val();
+    searchInput = $(".search-input").val();
     cityQuery = $('.location-input').val();
-    //when user inputs city, state, need to geocode into longlat
     //do we want to allow zipcode also?
-    //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-    //seatGeek(queryURL);
-    $(".search-input").val("");
+    //$(".search-input").val("");
     dropdownReset();
     // //would like to pass the city only
     // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
@@ -302,8 +300,11 @@ function getLatLong(cityQuery) {
         //would like to pass the city only
         $(".upcoming-listing").text("Upcoming Events in " + currentCity);
         $('.location-input').val(fullLocation);
-        
-        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        if (searchInput !== "") {
+            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        } else {
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        }
         seatGeek(queryURL);
     })
 }
