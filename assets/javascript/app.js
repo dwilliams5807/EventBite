@@ -84,7 +84,6 @@ $("form").on("submit", function(event) {
     //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     //seatGeek(queryURL);
     $(".search-input").val("");
-    $(".location-input").val("");
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
@@ -177,20 +176,21 @@ function seatGeek(seatGeekURL) {
 }
 
 $(".city-container").on("click", function() {
-    var destination = $(this).children(".travel-destination").children("h4").text();
-    if (destination === "Austin, TX") {
+    var destination = $(this).children(".travel-destination").children("h4").children("span").text();
+    if (destination === "Austin") {
         longitude = -97.7539;
         latitude = 30.3076;
-    } else if (destination === "Orlando, FL") {
+    } else if (destination === "Orlando") {
         longitude = -81.3792;
         latitude = 28.5383;
-    } else if (destination === "New York City, NY") {
+    } else if (destination === "New York City") {
         longitude = -74.0060;
         latitude = 40.7128;
-    } else if (destination === "Los Angeles, CA") {
+    } else if (destination === "Los Angeles") {
         longitude = -119.4179;
         latitude = 36.7783;
     }
+    $(".upcoming-listing").text("Upcoming Events in " + destination);
     eventsArray = [];
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
@@ -247,6 +247,8 @@ $(".city-container").on("click", function() {
 //1. click on a new featured location
 //2. when searching
 
+//autocomplete for location search?
+
 function getCityState() {
     $.ajax({
         url: "https://get.geojs.io/v1/ip/geo.json",
@@ -262,6 +264,7 @@ function getCityState() {
         // console.log(response.city + ', ' + response.region);
 
         //$('.location-input').attr('placeholder', response.city + ', ' + response.region);
+        $(".upcoming-listing").text("Upcoming Events in " + response.city);
         $('.location-input').val(response.city + ', ' + response.region);
         seatGeek(queryURL);
     })
