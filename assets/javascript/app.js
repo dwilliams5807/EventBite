@@ -8,7 +8,8 @@ var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
 var resLat;
 var resLon;
-var cityQuery
+var cityQuery;
+var currentCity;
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -86,8 +87,9 @@ $("form").on("submit", function(event) {
     //seatGeek(queryURL);
     $(".search-input").val("");
     dropdownReset();
-    //would like to pass the city only
-    $(".upcoming-listing").text("Upcoming Events in " + cityQuery);
+    // //would like to pass the city only
+    // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+    // $('.location-input').val(currentCity);
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
@@ -290,11 +292,16 @@ function getLatLong(cityQuery) {
         url: citySearch,
         method: "GET"
     }).done(function(response) {
-        console.log("getLatLong: ", response)
+        // console.log("getLatLong: ", response)
         latitude = response.features[0].center[1];
         // console.log('getLatLong latitude: ', response.features[0].center[1]);
         longitude = response.features[0].center[0];
         // console.log('getLatLong longitude: ', response.features[0].center[0]);
+        currentCity = response.features[0].text;
+        var fullLocation = response.features[0].place_name;
+        //would like to pass the city only
+        $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+        $('.location-input').val(fullLocation);
         
         queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
         seatGeek(queryURL);
