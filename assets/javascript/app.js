@@ -10,6 +10,7 @@ var resLat;
 var resLon;
 var cityQuery;
 var currentCity;
+var searchInput;
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -79,12 +80,10 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 //    accept city name / zip code
 $("form").on("submit", function(event) {
     event.preventDefault();
-    var searchInput = $(".search-input").val();
+    searchInput = $(".search-input").val();
     cityQuery = $('.location-input').val();
-    //when user inputs city, state, need to geocode into longlat
     //do we want to allow zipcode also?
-    //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-    //seatGeek(queryURL);
+    getLatLong(cityQuery);
     $(".search-input").val("");
     dropdownReset();
     // //would like to pass the city only
@@ -93,7 +92,6 @@ $("form").on("submit", function(event) {
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
-   getLatLong(cityQuery);
 })
 
 function seatGeek(seatGeekURL) {
@@ -302,8 +300,11 @@ function getLatLong(cityQuery) {
         //would like to pass the city only
         $(".upcoming-listing").text("Upcoming Events in " + currentCity);
         $('.location-input').val(fullLocation);
-        
-        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        if (searchInput !== "") {
+            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        } else {
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        }
         seatGeek(queryURL);
     })
 }
@@ -368,9 +369,9 @@ $(".card-container").on("click", ".card", function() {
     var e = eventsArray[index];
     $('.modal-header > img').attr('src', e.image);
     $('.event-title').text(e.event);
-    $('.location').html(e.address + '<br />' + e.city + ', ' + e.state);
-    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
-    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+    $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
+    $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
+   
 
     //zomato api
     resLat = $(this).attr("data-lat");
