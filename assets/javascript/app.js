@@ -85,6 +85,9 @@ $("form").on("submit", function(event) {
     //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     //seatGeek(queryURL);
     $(".search-input").val("");
+    dropdownReset();
+    //would like to pass the city only
+    $(".upcoming-listing").text("Upcoming Events in " + location);
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
@@ -192,6 +195,7 @@ $(".city-container").on("click", function() {
         latitude = 36.7783;
     }
     $(".upcoming-listing").text("Upcoming Events in " + destination);
+    dropdownReset();
     eventsArray = [];
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
@@ -308,9 +312,7 @@ function mapBox() {
         zoom: 13
     });
 
-    var marker = new mapboxgl.Marker()
-        .setLngLat([resLon, resLat])
-        .addTo(map);
+    new mapboxgl.Marker().setLngLat([resLon, resLat]).addTo(map);
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
@@ -327,6 +329,11 @@ $(".date-menu a").on("click", function() {
 $(".category-menu a").on("click", function() {
     toggle(".category-toggle:first-child", this);
 })
+
+function dropdownReset() {
+    $(".category-toggle:first-child").text("Any Category");
+    $(".category-toggle:first-child").removeAttr("style");
+}
 
 function toggle(toggleItem, menu) {
     $(toggleItem).text($(menu).text());
@@ -413,6 +420,7 @@ $(".card-container").on("click", ".card", function() {
                 + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
+    $(".row").animate({ "scrollLeft": 0});
     mapBox();
 });
 
