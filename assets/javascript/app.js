@@ -137,84 +137,75 @@ function seatGeek(seatGeekURL) {
         url: seatGeekURL,
         method: "GET"
     }).done(function(response) {
+        console.log(response)
         $('.card-container').html("");
-        for (var i = 0; i < response.events.length; i++) {
-            var element = response.events[i];
-            var event = element.title;
-            var date = element.datetime_local;
-            var city = element.venue.city;
-            var state = element.venue.state;
-            var coords = element.venue.location;
-            var tickets = element.url; // ticket URL
-            var venue = element.venue.name;
-            var address = element.venue.address;
-            category = element.taxonomies[0].name;
-            var image = element.performers[0].image;
-            // I moved the image if/elses up here above the eventsArray 
-            // because I was getting the same error with the images
-
-
-            // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
-            // console.log("seatgeek - event date: ", response.events[0].datetime_local)
-            // console.log("seatgeek - event city: ", response.events[0].venue.city)
-            // console.log("seatgeek - event state: ", response.events[0].venue.state)
-            // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-            if (image === null && category === "sports") {
-                image = "assets/images/sports.jpg";
-            } else if (image === null && category === "concert") {
-                image = "assets/images/concert.jpg";
-            } else if (image === null && category === "theater") {
-                image = "assets/images/theater.jpg";
-            } else if (image === null && category === "comedy") {
-                image = "assets/images/comedy.jpg";
-            } else {
-                image = element.performers[0].image;
-            }
-
-            eventsArray.push({
-                event: event,
-                date: date,
-                city: city,
-                state: state,
-                coords: coords,
-                venue: venue,
-                address: address,
-                tickets: tickets,
-                category: category,
-                image: image
-            });
-
-
-            // var element = response.events[i];
-
-
-
-            // console.log("seatgeek - title: ", response.events[0].title)
-            // console.log(event, element)
-            // console.log("seatgeek - venue name: ", response.events[0].venue.name)
-            // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
-            // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
-            // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
-            // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
-            // console.log("seatgeek - event date: ", response.events[0].datetime_local)
-            // console.log("seatgeek - event city: ", response.events[0].venue.city)
-            // console.log("seatgeek - event state: ", response.events[0].venue.state)
-            // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-
-            $('.card-container').append(
-                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
-                '<p class="category"><span>' + category + '</span></p>' +
-                '<img src="' + image + '" class="card-img-top">' +
-                '<div class="card-body">' +
-                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
-                '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
-                '</div>' +
-                '</div>'
+        if (response.events.length === 0) {
+            $('.card-container').html(
+            '<div class="search-error"' +
+            '<p>Your search for <strong>' + searchInput + '</strong> did not match any events.</p>' + 
+            '<p>Suggestions:</p>' + 
+            '<ul>' +
+                '<li>Make sure all words are spelled correctly</li>' +
+                '<li>Try different keywords</li>' +
+                '<li>Try more general keywords</li>' +
+            '</ul>' +
+            '</div>'
             );
+        } else {
+            for (var i = 0; i < response.events.length; i++) {
+                var element = response.events[i];
+                var event = element.title;
+                var date = element.datetime_local;
+                var city = element.venue.city;
+                var state = element.venue.state;
+                var coords = element.venue.location;
+                var tickets = element.url; // ticket URL
+                var venue = element.venue.name;
+                var address = element.venue.address;
+                category = element.taxonomies[0].name;
+                var image = element.performers[0].image;
+                
+                if (image === null && category === "sports") {
+                    image = "assets/images/sports.jpg";
+                } else if (image === null && category === "concert") {
+                    image = "assets/images/concert.jpg";
+                } else if (image === null && category === "theater") {
+                    image = "assets/images/theater.jpg";
+                } else if (image === null && category === "comedy") {
+                    image = "assets/images/comedy.jpg";
+                } else {
+                    image = element.performers[0].image;
+                }
+
+                eventsArray.push({
+                    event: event,
+                    date: date,
+                    city: city,
+                    state: state,
+                    coords: coords,
+                    venue: venue,
+                    address: address,
+                    tickets: tickets,
+                    category: category,
+                    image: image
+                });
+
+            
+                $('.card-container').append(
+                    '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
+                    '<p class="category"><span>' + category + '</span></p>' +
+                    '<img src="' + image + '" class="card-img-top">' +
+                    '<div class="card-body">' +
+                    '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
+                    '<h5 class="card-title">' + event + '</h5>' +
+                    '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+            }
         }
-        // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
     })
+    // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
 }
 
 $(".city-container").on("click", function() {
