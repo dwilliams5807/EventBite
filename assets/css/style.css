@@ -389,7 +389,6 @@ form {
 
 .event h4 {
     font-size: 16px;
-    margin-top: 21px;
     font-weight: 600;
 }
 
@@ -400,6 +399,7 @@ form {
 .event-setting {
     font-size: 15px;
     font-weight: 600;
+    margin-bottom: 21px;
 }
 
 .event-setting i {
