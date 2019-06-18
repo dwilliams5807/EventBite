@@ -100,8 +100,8 @@ $('#categoryDropdown').on('click', '.dropdown-item', function(event) {
             break;
     }
     eventsArray = [];
-    if (dateFilter !== "") {
-        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+    if (searchInput !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;  
     } else {
         queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
     }
@@ -118,6 +118,7 @@ $("form").on("submit", function(event) {
     //do we want to allow zipcode also?
     getLatLong(cityQuery);
     $(".search-input").val("");
+    $(".category-toggle").removeClass("disabled");
     dateFilter = "";
     categoryFilter = "";
     dropdownReset();
@@ -140,6 +141,7 @@ function seatGeek(seatGeekURL) {
         console.log(response)
         $('.card-container').html("");
         if (response.events.length === 0) {
+            $(".category-toggle").addClass("disabled");
             $('.card-container').html(
             '<div class="search-error"' +
             '<p>Your search for <strong>' + searchInput + '</strong> did not match any events.</p>' + 
@@ -225,6 +227,7 @@ $(".city-container").on("click", function() {
     }
     $(".upcoming-listing").text("Upcoming Events in " + destination);
     dropdownReset();
+    $(".category-toggle").removeClass("disabled");
     eventsArray = [];
     dateFilter = "";
     categoryFilter = "";
