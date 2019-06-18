@@ -28,6 +28,11 @@ body {
     z-index: 2;
 }
 
+.logo {
+    float: left;   
+    position: absolute;
+}
+
 .tagline {
     color: white;
     width: 80%;
