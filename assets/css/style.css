@@ -600,9 +600,10 @@ form {
         font-size: 12px;
         top: 17px;
         left: 10px;
+        margin-bottom: 0;
     }
     .category span {
-        padding: 9px 17px;
+        padding: 7px 17px 9px;
     }
 }
 
