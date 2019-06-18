@@ -240,6 +240,12 @@ $(".city-container").on("click", function() {
 //info needed from wikipedia: description
 //})
 
+//is it possible to pass the whole address of the event for the modal instead of
+//just the location, city, and state?
+
+//clear dropdown when
+//1. click on a new featured location
+//2. when searching
 
 //mapbox
 //will place mapbox in it's own function and call it when the event is pressed on
