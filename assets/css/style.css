@@ -517,6 +517,11 @@ form {
     height: auto!important;
 }
 
+.search-error {
+    margin: calc(20px - 10px);
+    width: 100%;
+}
+
 @media screen and (max-width: 1039px) {
     .card img {
         height: 206px;
