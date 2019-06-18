@@ -392,6 +392,7 @@ $(".card-container").on("click", ".card", function() {
                 + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
         }
     })
+    $(".row").animate({ "scrollLeft": 0});
     mapBox();
 });
 
