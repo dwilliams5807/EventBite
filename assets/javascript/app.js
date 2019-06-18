@@ -83,7 +83,8 @@ $("form").on("submit", function(event) {
     searchInput = $(".search-input").val();
     cityQuery = $('.location-input').val();
     //do we want to allow zipcode also?
-    //$(".search-input").val("");
+    getLatLong(cityQuery);
+    $(".search-input").val("");
     dropdownReset();
     // //would like to pass the city only
     // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
@@ -91,7 +92,6 @@ $("form").on("submit", function(event) {
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
-   getLatLong(cityQuery);
 })
 
 function seatGeek(seatGeekURL) {
