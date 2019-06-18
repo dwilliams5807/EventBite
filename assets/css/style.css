@@ -484,6 +484,8 @@ form {
 .tickets:hover {
     cursor: pointer;
     opacity: 0.9;
+    text-decoration: none;
+    color: #fff;
 }
 
 .close-modal {

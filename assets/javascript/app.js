@@ -11,6 +11,7 @@ var resLon;
 var cityQuery;
 var currentCity;
 var searchInput;
+var tickets;
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -101,7 +102,7 @@ function seatGeek(seatGeekURL) {
     $.ajax({
         url: seatGeekURL,
         method: "GET"
-    }).done(function(response) {
+    }).then(function(response) {
         $('.card-container').html("");
         for (var i = 0; i < response.events.length; i++) {
             var element = response.events[i];
@@ -363,6 +364,7 @@ $(".fa-chevron-left").on("click", function() {
     $(".row").animate({ "scrollLeft": position - scrollWidth });
 })
 
+// modal
 $(".card-container").on("click", ".card", function() {
     //seatgeek api
     var index = $(this).attr('data-index');
@@ -371,6 +373,7 @@ $(".card-container").on("click", ".card", function() {
     $('.event-title').text(e.event);
     $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
     $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
+    $('.tickets').attr('href', e.tickets);
    
 
     //zomato api
