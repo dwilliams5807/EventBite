@@ -370,7 +370,6 @@ $(".card-container").on("click", ".card", function() {
     $('.event-title').text(e.event);
     $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
     $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
-    // $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
         
     // Wikipedia API
     var performerTitle = $(this).children(".card-body").children(".card-title").text();

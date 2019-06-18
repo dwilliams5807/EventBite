@@ -398,7 +398,7 @@ form {
 }
 
 .event-setting {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -408,7 +408,7 @@ form {
 
 .event-setting .fa-map-marker-alt {
     margin-right: 13px;
-    margin-left: 2px;
+    margin-left: 3px;
 }
 
 .event-setting p {
@@ -418,6 +418,7 @@ form {
 
 .location p {
     margin-left: 25px;
+    font-size: 15px;
 }
 
 .star-rating {
