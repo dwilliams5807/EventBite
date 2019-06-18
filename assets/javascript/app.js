@@ -8,6 +8,7 @@ var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
 var resLat;
 var resLon;
+var cityQuery
 
 // if ("geolocation" in navigator) {
 //     // check if geolocation is supported/enabled on current browser
@@ -253,6 +254,16 @@ $(".city-container").on("click", function() {
 
 //autocomplete for location search?
 
+$('.search-button').on("click", function (event) {
+    // event.preventDefault();
+    cityQuery = $('.search-input').val();
+    // console.log($('.search-input').val())
+    // cityQuery = $('.search-input').val(); 
+    getLatLong(cityQuery);
+  });
+
+// uses the user's IP address to produce a city and state for
+// inputting next to the search bar and above the event cards
 function getCityState() {
     $.ajax({
         url: "https://get.geojs.io/v1/ip/geo.json",
@@ -260,16 +271,33 @@ function getCityState() {
     }).done(function(response) {
         // console.log(response)
         latitude = response.latitude;
-        console.log('latitude: ', response.latitude);
+        console.log('getCityState latitude: ', response.latitude);
         longitude = response.longitude;
-        console.log('longitude: ', response.longitude);
+        console.log('getCityState longitude: ', response.longitude);
         queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
 
-        // console.log(response.city + ', ' + response.region);
-
-        //$('.location-input').attr('placeholder', response.city + ', ' + response.region);
         $(".upcoming-listing").text("Upcoming Events in " + response.city);
         $('.location-input').val(response.city + ', ' + response.region);
+        seatGeek(queryURL);
+    })
+}
+
+// function to take the city search query and produce a latitude and longitude value
+// currently it doesn't update the location to the right of the search bar or the "upcoming events in..." section
+// we'll have to modify getCityState() or find another way to convert coords to a city/state
+function getLatLong(cityQuery) {
+    var citySearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURI(cityQuery) + ".json?access_token=pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA"
+    $.ajax({
+        url: citySearch,
+        method: "GET"
+    }).done(function(response) {
+        // console.log("getLatLong: ", response)
+        latitude = response.features[0].center[1];
+        // console.log('getLatLong latitude: ', response.features[0].center[1]);
+        longitude = response.features[0].center[0];
+        // console.log('getLatLong longitude: ', response.features[0].center[0]);
+        
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
         seatGeek(queryURL);
     })
 }
