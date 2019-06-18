@@ -43,11 +43,11 @@
                     <form>
                         <div class="term-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue...">
+                            <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue..." required>
                         </div>
                         <div class="location-search">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" class="location-input" placeholder="Austin, Texas" required>
+                            <input type="text" class="location-input" placeholder="Austin, TX" required>
                         </div>
                         <button type="submit" class="search-button">Search</button>
                     </form>
@@ -55,9 +55,9 @@
             </div>
         </div>
         <div class="inner-container">
-            <div class="event-listing" id="upcoming-events">
+            <div class="event-listing">
                 <div class="dropdown-container">
-                    <h4 class="listing-title upcoming-listing">Upcoming Events</h4>
+                    <h4 class="listing-title">Upcoming Events</h4>
                     <div class="dropdown-buttons">
                         <!-- <div class="dropdown">
                             <button class="btn dropdown-toggle date-toggle" type="button" id="dateDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -91,28 +91,28 @@
                     <div class="city-container">
                         <img src="assets/images/austin.jpg">
                         <div class="travel-destination">
-                            <h4><span class="city">Austin</span>, TX</h4>
+                            <h4>Austin, TX</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
                         <img src="assets/images/orlando.jpg">
                         <div class="travel-destination">
-                            <h4><span class="city">Orlando</span>, FL</h4>
+                            <h4>Orlando, FL</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
                         <img src="assets/images/new-york-city.jpg">
                         <div class="travel-destination">
-                            <h4><span class="city">New York City</span>, NY</h4>
+                            <h4>New York City, NY</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
-                        <img src="assets/images/los-angeles.jpg">
+                        <img src="assets/images/venice.jpg">
                         <div class="travel-destination">
-                            <h4><span class="city">Los Angeles</span>, CA</h4>
+                            <h4>Los Angeles, CA</h4>
                             <p>United States</p>
                         </div>
                     </div>
@@ -133,10 +133,17 @@
                 </div>
                 <div class="modal-body">
                     <h3 class="event-title">Twenty One Pilots</h3>
+                    <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
                     <div class="event description">
                         <div class="event-setting">
-                            <div class="datetime"><i class="far fa-calendar"></i>Sunday, June 23, 2019 at 3:30 PM</div>
-                            <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
+                            <div class="date-container">
+                                <h4>Date</h4>
+                                <p><i class="far fa-calendar"></i>Sunday, June 23, 2019</p>
+                            </div>
+                            <div class="time-container">
+                              <h4>Time</h4>
+                                <p><i class="far fa-clock"></i>3:30 PM</p>
+                            </div>
                         </div>
                         <h4>Description</h4>
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugiat debitis adipisci, blanditiis sunt dolorum! Doloremque tenetur nam dignissimos nisi architecto tempore in vitae dolor veritatis odit, placeat adipisci
