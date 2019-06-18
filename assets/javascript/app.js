@@ -2,7 +2,8 @@
 var postalCode;
 var latitude;
 var longitude;
-var categoryFilter;
+var dateFilter;
+var categoryFilter = "";
 var eventsArray = [];
 var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
@@ -46,8 +47,36 @@ var tickets;
 //     console.log('geolocation is not enabled on this browser')
 // }
 
+$('#dateDropdown').on('click', '.dropdown-item', function(event) {
+    event.preventDefault();
+    dateFilter = $(this).text();
+    switch (dateFilter) {
+        case "Today":
+            dateFilter = moment().utc().format("YYYY-MM-DD");
+            break;
+        case "Tomorrow":
+            dateFilter = moment().add(1, "days").utc().format("YYYY-MM-DD");
+            break;
+        case "Weekend":
+            dateFilter = moment().day(6).utc().format("YYYY-MM-DD") + "&datetime_utc=" + moment().day(7).format("YYYY-MM-DD");
+            break;
+        default:
+            ""
+            break;
+    }
+    console.log(dateFilter);
+    eventsArray = [];
+    if (categoryFilter !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+    } else {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&datetime_utc=" + dateFilter;
+    }
+    seatGeek(queryURL);
+})
+
+
 //need to rename because both dropdowns are called dropdown
-$('.dropdown').on('click', '.dropdown-item', function(event) {
+$('#categoryDropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
     categoryFilter = $(this).text();
@@ -71,8 +100,11 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             ""
             break;
     }
-    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
-
+    if (dateFilter !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+    } else {
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    }
     eventsArray = [];
     seatGeek(queryURL);
 })
@@ -82,6 +114,24 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 
 //  search bar
 //    accept city name / zip code
+$("form").on("submit", function(event) {
+    event.preventDefault();
+    searchInput = $(".search-input").val();
+    cityQuery = $('.location-input').val();
+    //do we want to allow zipcode also?
+    getLatLong(cityQuery);
+    $(".search-input").val("");
+    dateFilter = "";
+    categoryFilter = "";
+    dropdownReset();
+    // //would like to pass the city only
+    // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+    // $('.location-input').val(currentCity);
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
+})
+
 function seatGeek(seatGeekURL) {
     // taxonomies: sports, concert, theater
     // console.log(queryURL)
@@ -184,6 +234,12 @@ $(".city-container").on("click", function() {
         longitude = -119.4179;
         latitude = 36.7783;
     }
+
+    $(".upcoming-listing").text("Upcoming Events in " + destination);
+    dropdownReset();
+    eventsArray = [];
+    dateFilter = "";
+    categoryFilter = "";
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
 })
@@ -260,6 +316,13 @@ $(".category-menu a").on("click", function() {
     toggle(".category-toggle:first-child", this);
 })
 
+function dropdownReset() {
+    $(".category-toggle:first-child").text("Any Category");
+    $(".category-toggle:first-child").removeAttr("style");
+    $(".date-toggle:first-child").text("Any Date");
+    $(".date-toggle:first-child").removeAttr("style");
+}
+
 function toggle(toggleItem, menu) {
     $(toggleItem).text($(menu).text());
     $(toggleItem).val($(menu).text());
@@ -289,10 +352,9 @@ $(".card-container").on("click", ".card", function() {
     var e = eventsArray[index];
     $('.modal-header > img').attr('src', e.image);
     $('.event-title').text(e.event);
-    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
-    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
-    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
-
+    $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
+    $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
+     
     //zomato api
     resLat = $(this).attr("data-lat");
     resLon = $(this).attr("data-lon");
