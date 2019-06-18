@@ -236,58 +236,7 @@ $(".city-container").on("click", function() {
 })
 
 //to do
-//element.url --> view tickets
-//link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
 //if no events show up in a certain category, display an error page
-
-//create constructor for api calls
-//seatgeek api will be called about 6-7 times,
-//so we don't want to write the same code 6-7 times
-//1. geolocation - done
-//2. if user declines geolocation - done
-//3. when user chooses a category from dropdown** - done
-//4. when user filters by date from dropdown**
-//5. when user enters a search input
-//6. when displaying information on the modal - done
-//7. when user clicks on a featured location -- need to find the longlat for featured locations
-//dropdown will be pertaining to the featured location
-//maybe another ajax call when user makes a search and uses the dropdown
-
-//change the url depending on whether user picks:
-//category, then date
-//date, then category
-//category only
-//date only
-
-//search bar
-//if user agrees to use geolocation, reverse geocode into city, state
-//and pass that value into the location search
-//if user rejects, user can enter their own location manually
-//prevent page from refreshing
-//get value from search and pass as a parameter for url
-//user has to provide both a search term and location to submit
-//call ajax
-//maybe change the text from "upcoming events" to "upcoming events in <location>"
-//clear value from term search, but not location search
-//reset values on dropdown if utilized before search
-
-//location bar
-
-//$("event div").on("click, function() {
-//get event name for wikipedia api
-//info needed from wikipedia: description
-//})
-
-//is it possible to pass the whole address of the event for the modal instead of
-//just the location, city, and state?
-
-//clear dropdown when
-//1. click on a new featured location
-//2. when searching
-
-//autocomplete for location search?
-
-
 
 // uses the user's IP address to produce a city and state for
 // inputting next to the search bar and above the event cards
@@ -444,8 +393,28 @@ $(".card-container").on("click", ".card", function() {
                 resImage = "assets/images/restaurant.jpg";
             }
             
-            if (resRating === 0) {
-                resRating = "No Rating";
+            if (resRating >= 0 && resRating < 0.3) {
+                resRating = "<div class='noRating'> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> </div>"
+            }  else if (resRating >= 0.3 && resRating < 0.8) {
+                resRating = "<i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            }  else if (resRating >= 0.8 && resRating < 1.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            }  else if (resRating >= 1.3 && resRating < 1.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 1.8 && resRating < 2.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 2.3 && resRating < 2.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 2.8 && resRating < 3.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 3.3 && resRating < 3.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 3.8 && resRating < 4.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 4.3 && resRating < 4.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i>"
+            } else if (resRating >= 4.8 && resRating <= 5) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>"
             }
 
             if (resPrice === 1) {
