@@ -248,8 +248,8 @@ form {
     font-size: 11px;
     letter-spacing: 0.8px;
     position: absolute;
-    top: 16px;
-    left: 11px;
+    top: 12px;
+    left: 8px;
 }
 
 .category span {
@@ -267,7 +267,7 @@ form {
     margin-bottom: 5px;
 }
 
-.location, .card-location {
+.card-location {
     font-size: 14px;
     font-weight: 600;
 }
@@ -348,23 +348,8 @@ form {
 
 .event-title {
     margin-top: 20px;
-    margin-bottom: 6px;
+    margin-bottom: 15px;
     font-weight: 600;
-}
-
-.modal-body .date, .modal-body .location {
-    font-size: 15px;
-    text-transform: none;
-}
-
-.event h4 {
-    font-size: 16px;
-    margin-top: 21px;
-    font-weight: 600;
-}
-
-.event p {
-    font-size: 14px;
 }
 
 .restaurant-gallery {
@@ -410,21 +395,38 @@ form {
     margin-bottom: 1px;
 }
 
-.event-setting {
-    display: flex;
+.event h4 {
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.date-container, .time-container {
-    width: 50%;
+.event p {
+    font-size: 14px;
+}
+
+.event-setting {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 21px;
 }
 
 .event-setting i {
     margin-right: 10px;
 }
 
+.event-setting .fa-map-marker-alt {
+    margin-right: 13px;
+    margin-left: 3px;
+}
+
 .event-setting p {
     margin-bottom: 0;
     font-weight: 600;
+}
+
+.location p {
+    margin-left: 25px;
+    font-size: 15px;
 }
 
 .star-rating {
