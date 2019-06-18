@@ -99,11 +99,11 @@ $('#categoryDropdown').on('click', '.dropdown-item', function(event) {
             ""
             break;
     }
-    eventsArray = [];
-    if (searchInput !== "") {
-        queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;  
-    } else {
+    eventsArray = []; 
+    if (searchInput === undefined || searchInput === "") {
         queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    } else if (searchInput !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;  
     }
     seatGeek(queryURL);
 })
@@ -272,10 +272,10 @@ function getLatLong(cityQuery) {
         //would like to pass the city only
         $(".upcoming-listing").text("Upcoming Events in " + currentCity);
         $('.location-input').val(fullLocation);
-        if (searchInput !== "") {
-            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-        } else {
+        if (searchInput === undefined || searchInput === "") {
             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        } else if (searchInput !== "") {
+            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";  
         }
         seatGeek(queryURL);
     })
