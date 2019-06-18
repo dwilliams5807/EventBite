@@ -79,7 +79,7 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
 $("form").on("submit", function(event) {
     event.preventDefault();
     var searchInput = $(".search-input").val();
-    var location = $(".location-input").val();
+    cityQuery = $('.location-input').val();
     //when user inputs city, state, need to geocode into longlat
     //do we want to allow zipcode also?
     //queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
@@ -87,10 +87,11 @@ $("form").on("submit", function(event) {
     $(".search-input").val("");
     dropdownReset();
     //would like to pass the city only
-    $(".upcoming-listing").text("Upcoming Events in " + location);
+    $(".upcoming-listing").text("Upcoming Events in " + cityQuery);
     $('html, body').animate({
         scrollTop: $("#upcoming-events").offset().top - 50
    }, 500);
+   getLatLong(cityQuery);
 })
 
 function seatGeek(seatGeekURL) {
@@ -101,7 +102,6 @@ function seatGeek(seatGeekURL) {
         url: seatGeekURL,
         method: "GET"
     }).done(function(response) {
-
         $('.card-container').html("");
         for (var i = 0; i < response.events.length; i++) {
             var element = response.events[i];
@@ -112,6 +112,7 @@ function seatGeek(seatGeekURL) {
             var coords = element.venue.location;
             var tickets = element.url; // ticket URL
             var venue = element.venue.name;
+            var address = element.venue.address;
             category = element.taxonomies[0].name;
             var image = element.performers[0].image;
             // I moved the image if/elses up here above the eventsArray 
@@ -142,6 +143,8 @@ function seatGeek(seatGeekURL) {
                 state: state,
                 coords: coords,
                 venue: venue,
+                address: address,
+                tickets: tickets,
                 category: category,
                 image: image
             });
@@ -240,6 +243,8 @@ $(".city-container").on("click", function() {
 //clear value from term search, but not location search
 //reset values on dropdown if utilized before search
 
+//location bar
+
 //$("event div").on("click, function() {
 //get event name for wikipedia api
 //info needed from wikipedia: description
@@ -254,13 +259,7 @@ $(".city-container").on("click", function() {
 
 //autocomplete for location search?
 
-$('.search-button').on("click", function (event) {
-    // event.preventDefault();
-    cityQuery = $('.search-input').val();
-    // console.log($('.search-input').val())
-    // cityQuery = $('.search-input').val(); 
-    getLatLong(cityQuery);
-  });
+
 
 // uses the user's IP address to produce a city and state for
 // inputting next to the search bar and above the event cards
@@ -291,7 +290,7 @@ function getLatLong(cityQuery) {
         url: citySearch,
         method: "GET"
     }).done(function(response) {
-        // console.log("getLatLong: ", response)
+        console.log("getLatLong: ", response)
         latitude = response.features[0].center[1];
         // console.log('getLatLong latitude: ', response.features[0].center[1]);
         longitude = response.features[0].center[0];
@@ -362,7 +361,7 @@ $(".card-container").on("click", ".card", function() {
     var e = eventsArray[index];
     $('.modal-header > img').attr('src', e.image);
     $('.event-title').text(e.event);
-    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
+    $('.location').html(e.address + '<br />' + e.city + ', ' + e.state);
     $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
     $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
         
