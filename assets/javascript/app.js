@@ -324,9 +324,32 @@ $(".card-container").on("click", ".card", function() {
                 resImage = "assets/images/restaurant.jpg";
             }
             
-            if (resRating === 0) {
-                resRating = "No Rating";
-            }
+            // if (resRating === 0) {
+            //     resRating = "No Rating";
+            // }
+              if (resRating >= 0 && resRating < 0.3) {
+                resRating = "<div class='noRating'> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> </div>"
+            }  else if (resRating >= 0.3 && resRating < 0.8) {
+                resRating = "<i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            }  else if (resRating >= 0.8 && resRating < 1.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            }  else if (resRating >= 1.3 && resRating < 1.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 1.8 && resRating < 2.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 2.3 && resRating < 2.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 2.8 && resRating < 3.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 3.3 && resRating < 3.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 3.8 && resRating < 4.3) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='far fa-star'></i>"
+            } else if (resRating >= 4.3 && resRating < 4.8) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i>"
+            } else if (resRating >= 4.8 && resRating <= 5) {
+                resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>"
+            } 
 
             if (resPrice === 1) {
                 resPrice = "$";

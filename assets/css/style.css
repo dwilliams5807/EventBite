@@ -195,6 +195,9 @@ form {
     letter-spacing: 0.4px;
     margin-bottom: 25px;
 }
+.noRating {
+    color: #c4c4c4;
+}
 
 .event-listing .listing-title {
     margin-bottom: 0;
