@@ -273,7 +273,7 @@ $(".card-container").on("click", ".card", function() {
             
             //convert numerial rating into star rating
             if (resRating >= 0 && resRating < 0.3) {
-                resRating = "<div class='noRating'> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> </div>"
+                resRating = "<div class='noRating'> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> </div>"
             }  else if (resRating >= 0.3 && resRating < 0.8) {
                 resRating = "<i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
             }  else if (resRating >= 0.8 && resRating < 1.3) {
