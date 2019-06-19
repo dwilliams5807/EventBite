@@ -43,11 +43,11 @@
                     <form>
                         <div class="term-search">
                             <i class="fas fa-search"></i>
-                            <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue..." required>
+                            <input type="text" class="search-input" placeholder="Search by team, artist, event, or venue...">
                         </div>
                         <div class="location-search">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" class="location-input" placeholder="Austin, TX" required>
+                            <input type="text" class="location-input" placeholder="Austin, Texas" required>
                         </div>
                         <button type="submit" class="search-button">Search</button>
                     </form>
@@ -55,12 +55,12 @@
             </div>
         </div>
         <div class="inner-container">
-            <div class="event-listing">
+            <div class="event-listing" id="upcoming-events">
                 <div class="dropdown-container">
-                    <h4 class="listing-title">Upcoming Events</h4>
+                    <h4 class="listing-title upcoming-listing">Upcoming Events</h4>
                     <div class="dropdown-buttons">
-                        <!-- <div class="dropdown">
-                            <button class="btn dropdown-toggle date-toggle" type="button" id="dateDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- <div class="dropdown" id="dateDropdown">
+                            <button class="btn dropdown-toggle date-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Any Date
                             </button>
                             <div class="dropdown-menu date-menu" aria-labelledby="dropdownMenuButton">
@@ -69,8 +69,8 @@
                                 <a class="dropdown-item" href="#">Weekend</a>
                             </div>
                         </div> -->
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle category-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="dropdown" id="categoryDropdown">
+                            <button class="btn dropdown-toggle category-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Any Category
                             </button>
                             <div class="dropdown-menu category-menu" aria-labelledby="dropdownMenuButton">
@@ -91,28 +91,28 @@
                     <div class="city-container">
                         <img src="assets/images/austin.jpg">
                         <div class="travel-destination">
-                            <h4>Austin, TX</h4>
+                            <h4><span class="city">Austin</span>, TX</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
                         <img src="assets/images/orlando.jpg">
                         <div class="travel-destination">
-                            <h4>Orlando, FL</h4>
+                            <h4><span class="city">Orlando</span>, FL</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
                         <img src="assets/images/new-york-city.jpg">
                         <div class="travel-destination">
-                            <h4>New York City, NY</h4>
+                            <h4><span class="city">New York City</span>, NY</h4>
                             <p>United States</p>
                         </div>
                     </div>
                     <div class="city-container">
-                        <img src="assets/images/venice.jpg">
+                        <img src="assets/images/los-angeles.jpg">
                         <div class="travel-destination">
-                            <h4>Los Angeles, CA</h4>
+                            <h4><span class="city">Los Angeles</span>, CA</h4>
                             <p>United States</p>
                         </div>
                     </div>
@@ -133,17 +133,10 @@
                 </div>
                 <div class="modal-body">
                     <h3 class="event-title">Twenty One Pilots</h3>
-                    <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
                     <div class="event description">
                         <div class="event-setting">
-                            <div class="date-container">
-                                <h4>Date</h4>
-                                <p><i class="far fa-calendar"></i>Sunday, June 23, 2019</p>
-                            </div>
-                            <div class="time-container">
-                              <h4>Time</h4>
-                                <p><i class="far fa-clock"></i>3:30 PM</p>
-                            </div>
+                            <div class="datetime"><i class="far fa-calendar"></i>Sunday, June 23, 2019 at 3:30 PM</div>
+                            <div class="location"><i class="fas fa-map-marker-alt"></i>Frank Erwin Center, Austin, TX</div>
                         </div>
                         <h4>Description</h4>
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur fugiat debitis adipisci, blanditiis sunt dolorum! Doloremque tenetur nam dignissimos nisi architecto tempore in vitae dolor veritatis odit, placeat adipisci
@@ -234,7 +227,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="close-modal" data-dismiss="modal">Close</div>
-                    <div class="tickets">View Tickets</div>
+                    <a href="#" class="tickets">View Tickets</a>
                 </div>
             </div>
         </div>
@@ -244,5 +237,4 @@
     <script type="text/javascript" src="assets/javascript/app.js"></script>
 
 </body>
-
 </html>

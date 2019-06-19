@@ -2,48 +2,80 @@
 var postalCode;
 var latitude;
 var longitude;
-var categoryFilter;
+// var dateFilter;
+var categoryFilter = "";
 var eventsArray = [];
 var queryURL;
 var clientID = "MTcwMTYxNTZ8MTU2MDQ0Nzk3Mi41NQ";
 var resLat;
 var resLon;
+var cityQuery;
+var currentCity;
+var searchInput;
 
-if ("geolocation" in navigator) {
-    // check if geolocation is supported/enabled on current browser
-    navigator.geolocation.getCurrentPosition(
-        function success(position) {
-            console.log('user coordinates: ', position)
-                // for when getting location is a success
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
-            // if it's the first search and there are no filter terms, set filter to empty string
-            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-            seatGeek(queryURL);
-            // }
-        },
-        function error(error_message) {
-            // for when getting location results in an error
-            console.error('An error has occured while retrieving location', error_message)
-            console.log('No location data available. Using default location (Austin, TX).');
+// if ("geolocation" in navigator) {
+//     // check if geolocation is supported/enabled on current browser
+//     navigator.geolocation.getCurrentPosition(
+//         function success(position) {
+//             console.log('user coordinates: ', position)
+//                 // for when getting location is a success
+//             latitude = position.coords.latitude;
+//             longitude = position.coords.longitude;
+//             // console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+//             // if it's the first search and there are no filter terms, set filter to empty string
+//             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+//             seatGeek(queryURL);
+//             // }
+//         },
+//         function error(error_message) {
+//             // for when getting location results in an error
+//             console.error('An error has occured while retrieving location', error_message)
+//             console.log('No location data available. Using default location (Austin, TX).');
 
-            // use default location (Austin, TX)
-            latitude = 30.2672;
-            longitude = -97.7431;
+//             // use default location (Austin, TX)
+//             latitude = 30.2672;
+//             longitude = -97.7431;
 
-            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
-            seatGeek(queryURL);
-        }
-    )
-} else {
-    // geolocation is not supported
-    // get your location some other way
-    console.log('geolocation is not enabled on this browser')
-}
+//             queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+//             seatGeek(queryURL);
+//         }
+//     )
+// } else {
+//     // geolocation is not supported
+//     // get your location some other way
+//     console.log('geolocation is not enabled on this browser')
+// }
+
+// $('#dateDropdown').on('click', '.dropdown-item', function(event) {
+//     event.preventDefault();
+//     dateFilter = $(this).text();
+//     switch (dateFilter) {
+//         case "Today":
+//             dateFilter = moment().utc().format("YYYY-MM-DD");
+//             break;
+//         case "Tomorrow":
+//             dateFilter = moment().add(1, "days").utc().format("YYYY-MM-DD");
+//             break;
+//         case "Weekend":
+//             dateFilter = moment().day(6).utc().format("YYYY-MM-DD") + "&datetime_utc=" + moment().day(7).format("YYYY-MM-DD");
+//             break;
+//         default:
+//             ""
+//             break;
+//     }
+//     console.log(dateFilter);
+//     eventsArray = [];
+//     if (categoryFilter !== "") {
+//         queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter + "&datetime_utc=" + dateFilter;  
+//     } else {
+//         queryURL = "https://api.seatgeek.com/2/events?lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&datetime_utc=" + dateFilter;
+//     }
+//     seatGeek(queryURL);
+// })
+
 
 //need to rename because both dropdowns are called dropdown
-$('.dropdown').on('click', '.dropdown-item', function(event) {
+$('#categoryDropdown').on('click', '.dropdown-item', function(event) {
     event.preventDefault();
     // console.log($(this).text())/
     categoryFilter = $(this).text();
@@ -67,17 +99,36 @@ $('.dropdown').on('click', '.dropdown-item', function(event) {
             ""
             break;
     }
-    queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
-
-    eventsArray = [];
+    eventsArray = []; 
+    if (searchInput === undefined || searchInput === "") {
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;
+    } else if (searchInput !== "") {
+        queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12&taxonomies.name=" + categoryFilter;  
+    }
     seatGeek(queryURL);
 })
 
-
 //    if user refuses, they can use search bar
-
 //  search bar
 //    accept city name / zip code
+$("form").on("submit", function(event) {
+    event.preventDefault();
+    searchInput = "";
+    searchInput = $(".search-input").val();
+    cityQuery = $('.location-input').val();
+    //do we want to allow zipcode also?
+    getLatLong(cityQuery);
+    $(".search-input").val("");
+    categoryFilter = "";
+    dropdownReset();
+    // //would like to pass the city only
+    // $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+    // $('.location-input').val(currentCity);
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
+})
+
 function seatGeek(seatGeekURL) {
     // taxonomies: sports, concert, theater
     // console.log(queryURL)
@@ -86,150 +137,150 @@ function seatGeek(seatGeekURL) {
         url: seatGeekURL,
         method: "GET"
     }).done(function(response) {
-
+        console.log(response)
         $('.card-container').html("");
-        for (var i = 0; i < response.events.length; i++) {
-            var element = response.events[i];
-            var event = element.title;
-            var date = element.datetime_local;
-            var city = element.venue.city;
-            var state = element.venue.state;
-            var coords = element.venue.location;
-            var tickets = element.url; // ticket URL
-            var venue = element.venue.name;
-            category = element.taxonomies[0].name;
-            var image = element.performers[0].image;
-            // I moved the image if/elses up here above the eventsArray 
-            // because I was getting the same error with the images
-
-
-            // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
-            // console.log("seatgeek - event date: ", response.events[0].datetime_local)
-            // console.log("seatgeek - event city: ", response.events[0].venue.city)
-            // console.log("seatgeek - event state: ", response.events[0].venue.state)
-            // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-            if (image === null && category === "sports") {
-                image = "assets/images/sports.jpg";
-            } else if (image === null && category === "concert") {
-                image = "assets/images/concert.jpg";
-            } else if (image === null && category === "theater") {
-                image = "assets/images/theater.jpg";
-            } else if (image === null && category === "comedy") {
-                image = "assets/images/comedy.jpg";
-            } else {
-                image = element.performers[0].image;
-            }
-
-            // eventsArray = [];
-
-            eventsArray.push({
-                event: event,
-                date: date,
-                city: city,
-                state: state,
-                coords: coords,
-                venue: venue,
-                category: category,
-                image: image
-            });
-
-
-            // var element = response.events[i];
-
-
-
-            // console.log("seatgeek - title: ", response.events[0].title)
-            // console.log(event, element)
-            // console.log("seatgeek - venue name: ", response.events[0].venue.name)
-            // console.log("seatgeek - venue address: ", response.events[0].venue.address) // for displaying to user
-            // console.log("seatgeek - venue zip code: ", response.events[0].venue.postal_code) // for displaying to user
-            // console.log("seatgeek - venue location: ", response.events[0].venue.location) // for passing to YELP API
-            // console.log("seatgeek - event type: ", response.events[0].taxonomies[0].name)
-            // console.log("seatgeek - event date: ", response.events[0].datetime_local)
-            // console.log("seatgeek - event city: ", response.events[0].venue.city)
-            // console.log("seatgeek - event state: ", response.events[0].venue.state)
-            // console.log(moment(date).format("ddd, MMM D hh:mm A"));
-
-            $('.card-container').append(
-                '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
-                '<p class="category"><span>' + category + '</span></p>' +
-                '<img src="' + image + '" class="card-img-top">' +
-                '<div class="card-body">' +
-                '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
-                '<h5 class="card-title">' + event + '</h5>' +
-                '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
-                '</div>' +
-                '</div>'
+        if (response.events.length === 0) {
+            $('.card-container').html(
+                '<div class="search-error">' +
+                '<h2><strong>No results found.</strong></h2>' + 
+                '<p>It seems we can’t find any event based on your search. Try broader search terms or select a featured location at the bottom.</p>' +
+                '<a href="index.html" class="back-home">Back Home</a></div>'
             );
+        } else {
+            for (var i = 0; i < response.events.length; i++) {
+                var element = response.events[i];
+                var event = element.title;
+                var date = element.datetime_local;
+                var city = element.venue.city;
+                var state = element.venue.state;
+                var coords = element.venue.location;
+                var tickets = element.url; // ticket URL
+                var venue = element.venue.name;
+                var address = element.venue.address;
+                category = element.taxonomies[0].name;
+                var image = element.performers[0].image;
+                
+                if (image === null && category === "sports") {
+                    image = "assets/images/sports.jpg";
+                } else if (image === null && category === "concert") {
+                    image = "assets/images/concert.jpg";
+                } else if (image === null && category === "theater") {
+                    image = "assets/images/theater.jpg";
+                } else if (image === null && category === "comedy") {
+                    image = "assets/images/comedy.jpg";
+                } else {
+                    image = element.performers[0].image;
+                }
+
+                eventsArray.push({
+                    event: event,
+                    date: date,
+                    city: city,
+                    state: state,
+                    coords: coords,
+                    venue: venue,
+                    address: address,
+                    tickets: tickets,
+                    category: category,
+                    image: image
+                });
+
+            
+                $('.card-container').append(
+                    '<div class="card" data-toggle="modal" data-target="#exampleModal" data-index="' + i + '" data-lat="' + coords.lat + '" data-lon="' + coords.lon + '">' +
+                    '<p class="category"><span>' + category + '</span></p>' +
+                    '<img src="' + image + '" class="card-img-top">' +
+                    '<div class="card-body">' +
+                    '<div class="date">' + moment(date).format("ddd, MMM D &#65;&#84; h:mm A") + '</div>' +
+                    '<h5 class="card-title">' + event + '</h5>' +
+                    '<div class="card-location"><i class="fas fa-map-marker-alt"></i>' + venue + ', ' + city + ', ' + state + '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+            }
         }
-        // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
     })
+    // console.log("eventsArray", eventsArray);  // not needed unless sifting through the array
 }
 
 $(".city-container").on("click", function() {
-    var destination = $(this).children(".travel-destination").children("h4").text();
-    if (destination === "Austin, TX") {
-        longitude = -97.7431;
-        latitude = 30.2672;
-    } else if (destination === "Orlando, FL") {
+    var destination = $(this).children(".travel-destination").children("h4").children("span").text();
+    if (destination === "Austin") {
+        longitude = -97.7539;
+        latitude = 30.3076;
+    } else if (destination === "Orlando") {
         longitude = -81.3792;
         latitude = 28.5383;
-    } else if (destination === "New York City, NY") {
+    } else if (destination === "New York City") {
         longitude = -74.0060;
         latitude = 40.7128;
-    } else if (destination === "Los Angeles, CA") {
+    } else if (destination === "Los Angeles") {
         longitude = -119.4179;
         latitude = 36.7783;
     }
+    $(".upcoming-listing").text("Upcoming Events in " + destination);
+    searchInput = "";
+    dropdownReset();
+    eventsArray = [];
+    categoryFilter = "";
     queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
     seatGeek(queryURL);
+    $('html, body').animate({
+        scrollTop: $("#upcoming-events").offset().top - 50
+   }, 500);
 })
 
 //to do
-//element.url --> view tickets
-//link view tickets button to seatgeek ticket url  // stored in variable tickets -Mark
-//use a promise so that map loading does not interfere with api loading
 //if no events show up in a certain category, display an error page
 
-//create constructor for api calls
-//seatgeek api will be called about 6-7 times,
-//so we don't want to write the same code 6-7 times
-//1. geolocation
-//2. if user declines geolocation
-//3. when user chooses a category from dropdown**
-//4. when user filters by date from dropdown**
-//5. when user enters a search input
-//6. when displaying information on the modal
-//7. when user clicks on a featured location -- need to find the longlat for featured locations
-//dropdown will be pertaining to the featured location
-//maybe another ajax call when user makes a search and uses the dropdown
+// uses the user's IP address to produce a city and state for
+// inputting next to the search bar and above the event cards
+function getCityState() {
+    $.ajax({
+        url: "https://get.geojs.io/v1/ip/geo.json",
+        method: "GET"
+    }).done(function(response) {
+        // console.log(response)
+        latitude = response.latitude;
+        console.log('getCityState latitude: ', response.latitude);
+        longitude = response.longitude;
+        console.log('getCityState longitude: ', response.longitude);
+        queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
 
-//change the url depending on whether user picks:
-//category, then date
-//date, then category
-//category only
-//date only
+        $(".upcoming-listing").text("Upcoming Events in " + response.city);
+        $('.location-input').val(response.city + ', ' + response.region);
+        seatGeek(queryURL);
+    })
+}
 
-//search bar
-//if user agrees to use geolocation, reverse geocode into city, state
-//and pass that value into the location search
-//if user rejects, user can enter their own location manually
-//prevent page from refreshing
-//get value from search and pass as a parameter for url
-//user has to provide both a search term and location to submit
-//call ajax
-//maybe change the text from "upcoming events" to "upcoming events in <location>"
-//clear value from term search, but not location search
-//reset values on dropdown if utilized before search
+// function to take the city search query and produce a latitude and longitude value
+// currently it doesn't update the location to the right of the search bar or the "upcoming events in..." section
+// we'll have to modify getCityState() or find another way to convert coords to a city/state
+function getLatLong(cityQuery) {
+    var citySearch = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + encodeURI(cityQuery) + ".json?access_token=pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA"
+    $.ajax({
+        url: citySearch,
+        method: "GET"
+    }).done(function(response) {
+        // console.log("getLatLong: ", response)
+        latitude = response.features[0].center[1];
+        // console.log('getLatLong latitude: ', response.features[0].center[1]);
+        longitude = response.features[0].center[0];
+        // console.log('getLatLong longitude: ', response.features[0].center[0]);
+        currentCity = response.features[0].text;
+        var fullLocation = response.features[0].place_name;
+        //would like to pass the city only
+        $(".upcoming-listing").text("Upcoming Events in " + currentCity);
+        $('.location-input').val(fullLocation);
+        if (searchInput === undefined || searchInput === "") {
+            queryURL = "https://api.seatgeek.com/2/events?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";
+        } else if (searchInput !== "") {
+            queryURL = "https://api.seatgeek.com/2/events?q=" + searchInput + "?&lat=" + latitude + "&lon=" + longitude + "&client_id=" + clientID + "&per_page=12";  
+        }
+        seatGeek(queryURL);
+    })
+}
 
-//$("event div").on("click, function() {
-//get event name for wikipedia api
-//info needed from wikipedia: description
-//})
-
-
-//mapbox
-//will place mapbox in it's own function and call it when the event is pressed on
 function mapBox() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZWxhaW50cmFuIiwiYSI6ImNqd3pkMnJrNzEzbzg0M2p6Z293M2JneGIifQ.1LK7HmyNbLKLeL4u7yfjaA';
     var map = new mapboxgl.Map({
@@ -240,13 +291,14 @@ function mapBox() {
         zoom: 13
     });
 
-    var marker = new mapboxgl.Marker()
-        .setLngLat([resLon, resLat])
-        .addTo(map);
+    new mapboxgl.Marker().setLngLat([resLon, resLat]).addTo(map);
 
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl());
-    map.resize();
+
+    map.on('load', function() {
+        map.resize();
+    });
 }
 
 $(".date-menu a").on("click", function() {
@@ -256,6 +308,13 @@ $(".date-menu a").on("click", function() {
 $(".category-menu a").on("click", function() {
     toggle(".category-toggle:first-child", this);
 })
+
+function dropdownReset() {
+    $(".category-toggle:first-child").text("Any Category");
+    $(".category-toggle:first-child").removeAttr("style");
+    // $(".date-toggle:first-child").text("Any Date");
+    // $(".date-toggle:first-child").removeAttr("style");
+}
 
 function toggle(toggleItem, menu) {
     $(toggleItem).text($(menu).text());
@@ -279,25 +338,30 @@ $(".fa-chevron-left").on("click", function() {
 })
 
 $(".card-container").on("click", ".card", function() {
-
     //seatgeek api
     var index = $(this).attr('data-index');
     var e = eventsArray[index];
     $('.modal-header > img').attr('src', e.image);
     $('.event-title').text(e.event);
-    $('.location').text(e.venue + ', ' + e.city + ', ' + e.state);
-    $('.date-container > p').html('<i class="far fa-calendar"></i>' + moment(e.date).format("ddd, MMM D"));
-    $('.time-container > p').html('<i class="far fa-clock"></i>' + moment(e.date).format("h:mm A"));
+    $('.location').html("<i class='fas fa-map-marker-alt'></i>" + e.address + '<p>' + e.city + ', ' + e.state + "</p>");
+    $('.datetime').html('<i class="far fa-clock"></i>' + moment(e.date).format("dddd, MMMM Do YYYY") + " at " + moment(e.date).format("h:mm A"));
+    $('.tickets').attr({
+        'href': e.tickets,
+        'target': "_blank"
+    });
         
     // Wikipedia API
     var performerTitle = $(this).children(".card-body").children(".card-title").text();
-    var wikiURL = "https://?format=json&action=query&prop=extracts&exintro=&explaintext=&redirects=1&srsearch=" + performerTitle;
+    console.log(performerTitle);
+    var wikiURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=1&prop=extracts&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=" + performerTitle + "&gsrinfo=totalhits&format=json&callback=?";
 
     $.ajax({
         url: wikiURL,
-        method: "GET"
+        method: "GET",
+        jsonp: "callback",
+        dataType: 'jsonp'   
     }).done(function(response) {
-        // console.log(response);
+        console.log(response);
     });
 
     //zomato api
@@ -324,10 +388,7 @@ $(".card-container").on("click", ".card", function() {
                 resImage = "assets/images/restaurant.jpg";
             }
             
-            // if (resRating === 0) {
-            //     resRating = "No Rating";
-            // }
-              if (resRating >= 0 && resRating < 0.3) {
+            if (resRating >= 0 && resRating < 0.3) {
                 resRating = "<div class='noRating'> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> </div>"
             }  else if (resRating >= 0.3 && resRating < 0.8) {
                 resRating = "<i class='fas fa-star-half-alt'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i> <i class='far fa-star'></i>"
@@ -349,7 +410,7 @@ $(".card-container").on("click", ".card", function() {
                 resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star-half-alt'></i>"
             } else if (resRating >= 4.8 && resRating <= 5) {
                 resRating = "<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>"
-            } 
+            }
 
             if (resPrice === 1) {
                 resPrice = "$";
@@ -363,8 +424,11 @@ $(".card-container").on("click", ".card", function() {
 
             $(".row").append("<div class='col-5'> <img src='" +
                 resImage + "'> <div class='res-info'> <div class='star-rating'>"
-                + resRating + "</div> <div class='price-range'>" + resPrice + " </div> </div> <h4>" + resName + "</h4> <p>" + resAddress + "</p> </div>");
+                + resRating + "</div></div> <h4>" + resName + "</h4> <p>" + resAddress + "</p><div class='price-range'>" + resPrice + " </div> </div>");
         }
     })
+    $(".row").animate({ "scrollLeft": 0});
     mapBox();
 });
+
+getCityState();
