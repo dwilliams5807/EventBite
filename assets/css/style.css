@@ -533,6 +533,10 @@ form {
     cursor: pointer;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 @media screen and (max-width: 1039px) {
     .card img {
         height: 206px;
