@@ -340,6 +340,7 @@ function mapBox() {
     map.addControl(new mapboxgl.FullscreenControl());
     //allows to zoom in and zoom out map
     map.addControl(new mapboxgl.NavigationControl());
+    map.scrollZoom.disable();
 
     //initial map is blurry, so calling resize adjusts blur
     map.on('load', function() {
