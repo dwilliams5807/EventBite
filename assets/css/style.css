@@ -31,6 +31,11 @@ body {
 .logo {
     float: left;   
     position: absolute;
+    background: url(../images/eventBite-logo.svg) no-repeat;
+    width: 50px;
+    height: 50px;
+    left: 50px;
+    top: 10px;
 }
 
 .tagline {
@@ -196,7 +201,18 @@ form {
     margin-bottom: 25px;
 }
 .noRating {
-    color: #c4c4c4;
+    color: #eee;
+    position: relative;
+}
+
+.noRatingText {
+    position: absolute;
+    z-index: 1;
+    color: #ff452f;
+    font-size: 14px;
+    line-height: 22px;
+    width: 108px;
+    text-align: center;
 }
 
 .event-listing .listing-title {
