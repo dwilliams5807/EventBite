@@ -535,6 +535,7 @@ form {
 
 body.modal-open {
     overflow: hidden;
+    position: fixed;
 }
 
 @media screen and (max-width: 1039px) {
