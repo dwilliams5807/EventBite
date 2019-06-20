@@ -24,8 +24,8 @@ Elain Tran - GitHub: https://github.com/elaintran<br>
 Daniel Williams - GitHub: https://github.com/dwilliams5807<br>
 DJ Prado - GitHub: https://github.com/seabee03<br>
 
-**Wikipedia API**<br>
-Source: https://www.mediawiki.org/wiki/API:Main_page
+**GeoJS API**<br>
+Source: https://www.geojs.io/
 
 **SeatGeak**<br>
 Source: http://platform.seatgeek.com/
